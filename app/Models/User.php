@@ -17,8 +17,11 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
+        'is_attract',
+        'is_circulation',
+        'is_admin',
         'name',
-        'email',
+        'phone',
         'password',
     ];
 
@@ -40,4 +43,14 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function estate(){
+
+        return $this->hasMany(estate::class);
+    }
+    public function Posters(){
+
+        return $this->hasMany(Poster::class);
+    }
+
 }
