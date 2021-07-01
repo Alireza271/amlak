@@ -388,29 +388,33 @@ class circulationController extends Controller
 
     }
 
-    public function estates_of_day($id=null)
+    public function estates_of_day($id = null)
     {
         if (!isNull($id)) {
             $estate = estate::query()->where("user_id", $id)->where("created_at", ">=", Carbon::today())->paginate(10);
             $custom_filter['selected_user'] = $id;
-        } else {
+        } elseif (Auth::user()->is_admin) {
             $estate = estate::query()->where("created_at", ">=", Carbon::today())->paginate(10);
-            $custom_filter ['all_estate'] =1;
-
+            $custom_filter ['all_estate'] = 1;
+        } else {
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::today())->paginate(10);
         }
         $custom_filter ['date_range'] = Carbon::today();
         return view('circulation.estates', ['estates' => $estate, "custom_filter" => $custom_filter]);
     }
 
-    public function estates_of_week($id=null)
+    public function estates_of_week($id = null)
     {
         if (!isNull($id)) {
 
-            $estate = estate::query()->where("user_id", $id)->where('created_at' ,'>=',\Carbon\Carbon::now()->subDay(7))->paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->paginate(10);
             $custom_filter['selected_user'] = $id;
+        } elseif (Auth::user()->is_admin) {
+            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->paginate(10);
+            $custom_filter ['all_estate'] = 1;
+
         } else {
-            $estate = estate::query()->where('created_at' ,'>=',\Carbon\Carbon::now()->subDay(7))->paginate(10);
-            $custom_filter ['all_estate'] =1;
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(7))->paginate(10);
 
         }
         $custom_filter ['date_range'] = Carbon::now()->subDay(7);
@@ -418,15 +422,18 @@ class circulationController extends Controller
 
     }
 
-    public function estates_of_month($id=null)
+    public function estates_of_month($id = null)
     {
         if (!isNull($id)) {
 
-            $estate = estate::query()->where("user_id", $id)->where('created_at' ,'>=',\Carbon\Carbon::now()->subDay(30))->paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->paginate(10);
             $custom_filter['selected_user'] = $id;
+        } elseif (Auth::user()->is_admin) {
+            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->paginate(10);
+            $custom_filter ['all_estate'] = 1;
+
         } else {
-            $estate = estate::query()->where('created_at' ,'>=',\Carbon\Carbon::now()->subDay(30))->paginate(10);
-            $custom_filter ['all_estate'] =1;
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(30))->paginate(10);
 
         }
         $custom_filter ['date_range'] = Carbon::now()->subDay(30);
@@ -434,15 +441,18 @@ class circulationController extends Controller
 
     }
 
-    public function estates_of_year($id=null)
+    public function estates_of_year($id = null)
     {
         if (!isNull($id)) {
 
-            $estate = estate::query()->where("user_id", $id)->where('created_at' ,'>=',\Carbon\Carbon::now()->subDay(365))->paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365))->paginate(10);
             $custom_filter['selected_user'] = $id;
+        } elseif (Auth::user()->is_admin) {
+            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365))->paginate(10);
+            $custom_filter ['all_estate'] = 1;
+
         } else {
-            $estate = estate::query()->where('created_at' ,'>=',\Carbon\Carbon::now()->subDay(365))->paginate(10);
-            $custom_filter ['all_estate'] =1;
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(365))->paginate(10);
 
         }
 

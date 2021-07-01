@@ -30,30 +30,30 @@
                                 <hr>
 
 
-                                <button type="button" class="col-3 btn btn-primary position-relative m-2 p2">
+                                <a href="{{route('estates_of_day')}}" type="button" class="col-3 btn btn-primary position-relative m-2 p2">
                                     امروز
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->estate->where('created_at', '>=',\Carbon\Carbon::today())->count()}}</span>
-                                </button>
+                                </a>
 
-                                <button type="button" class="col-3 btn btn-primary position-relative m-2 p2">
+                                <a href="{{route('estates_of_week')}}" type="button" class="col-3 btn btn-primary position-relative m-2 p2">
                                     7 روز گذشته
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->estate->whereBetween('created_at',[\Carbon\Carbon::now()->subDay(7),\Carbon\Carbon::now()])->count()}}</span>
-                                </button>
+                                </a>
 
-                                <button type="button" class="col-3 btn btn-primary position-relative m-2 p2">
+                                <a href="{{route('estates_of_month')}}" type="button" class="col-3 btn btn-primary position-relative m-2 p2">
 
                                     ماه گذشته
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->estate->whereBetween('created_at',[\Carbon\Carbon::now()->subDay(30),\Carbon\Carbon::now()])->count()}}</span>
-                                </button>
-                                <button type="button" class="col-3 btn btn-primary position-relative m-2 p2">
+                                </a>
+                                <a href="{{route('estates_of_year')}}" type="button" class="col-3 btn btn-primary position-relative m-2 p2">
 
                                     سال گذشته
                                     <span
                                         class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->estate->whereBetween('created_at',[\Carbon\Carbon::now()->subDay(365),\Carbon\Carbon::now()])->count()}}</span>
-                                </button>
+                                </a>
 
                             </div>
 

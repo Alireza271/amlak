@@ -32,6 +32,10 @@ Route::prefix('Admin')->middleware("admin")->group(function () {
         Route::get('/{id}', [App\Http\Controllers\AdminController::class, 'get_user'])->name('get_user');
         Route::get('/{id}/all_estates', [App\Http\Controllers\AdminController::class, 'all_estate_for_user'])->name('all_estate_for_user');
     });
+    Route::get('customer_info_form',[\App\Http\Controllers\AdminController::class,'customer_info_form_page'])->name('customer_info_form_page');
+    Route::post('customer_info_form',[\App\Http\Controllers\AdminController::class,'customer_info_form'])->name('customer_info_form');
+    Route::get('customers_info',[\App\Http\Controllers\AdminController::class,'customers_info'])->name('customers_info');
+    Route::get('{id}/get_customer_info',[\App\Http\Controllers\AdminController::class,'get_customer_info'])->name('get_customer_info');
 
 
 });

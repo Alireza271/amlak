@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerInfo;
 use App\Models\estate;
 use App\Models\User;
 use Carbon\Carbon;
@@ -9,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
@@ -84,7 +86,32 @@ class AdminController extends Controller
 
         ];
         return view('circulation.estates', ['estates' => $estate, "custom_filter" => $custom_filter]);
+    }
 
+
+    public function customer_info_form_page()
+    {
+        return view('admin.customer_info_form');
+    }
+
+    public function customer_info_form(Request $request)
+
+    {
+        CustomerInfo::create($request->all());
+
+        return Redirect:: route('admin');
+    }
+
+    public function customers_info()
+    {
+        $Customers_Info = CustomerInfo::query()->paginate(10);
+        return view('admin.customers_info', ['customers_info' => $Customers_Info]);
+    }
+
+    public function get_customer_info($id)
+    {
+        $customer_info = CustomerInfo::find($id);
+        return view('admin.get_customer_info', ['customer_info' => $customer_info]);
 
     }
 

@@ -78,6 +78,23 @@
 
                                 </div>
                             </div>
+
+                            <div class="col-12">
+                                <div class="list-group position-relative" id="list-tab" role="">
+
+
+                                    <a class="list-group-item " id="list-settings-list"
+                                       href="{{route('customer_info_form_page')}}" role="tab"> ثبت  اطاعات مشتری </a>
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <div class="list-group position-relative" id="list-tab" role="">
+
+
+                                    <a class="list-group-item " id="list-settings-list"
+                                       href="{{route('customers_info')}}" role="tab">اطاعات مشتری </a>
+                                </div>
+                            </div>
                         </div>
 
 
