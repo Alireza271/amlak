@@ -103,7 +103,7 @@ return [
         'theme' => 'default',
 
         'paths' => [
-            resource_path('views/vendor.bak/mail'),
+            resource_path('views/vendor/mail'),
         ],
     ],
 

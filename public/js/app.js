@@ -7670,7 +7670,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
     return letter.toUpperCase();
   } // Convert dashed to camelCase; used by the css and data modules
   // Support: IE <=9 - 11, Edge 12 - 15
-  // Microsoft forgot to hump their vendor.bak prefix (#9572)
+  // Microsoft forgot to hump their vendor prefix (#9572)
 
 
   function camelCase(string) {
@@ -9852,10 +9852,10 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
 
   var cssPrefixes = ["Webkit", "Moz", "ms"],
       emptyStyle = document.createElement("div").style,
-      vendorProps = {}; // Return a vendor.bak-prefixed property or undefined
+      vendorProps = {}; // Return a vendor-prefixed property or undefined
 
   function vendorPropName(name) {
-    // Check for vendor.bak prefixed names
+    // Check for vendor prefixed names
     var capName = name[0].toUpperCase() + name.slice(1),
         i = cssPrefixes.length;
 
@@ -9866,7 +9866,7 @@ var __WEBPACK_AMD_DEFINE_ARRAY__, __WEBPACK_AMD_DEFINE_RESULT__;function _typeof
         return name;
       }
     }
-  } // Return a potentially-mapped jQuery.cssProps or vendor.bak prefixed property
+  } // Return a potentially-mapped jQuery.cssProps or vendor prefixed property
 
 
   function finalPropName(name) {
