@@ -19,7 +19,7 @@
 
                                 @foreach(\App\Models\estate_type::all() as $item)
                                     <a  href="{{route('search_estate',["estate_type"=>$item->id ,'lock'=>true])}}" type="button" class="col-3 btn btn-primary position-relative m-3 p-4">
-                                        {{$item->name}}
+                                          نمایش     {{$item->name}}
                                         <span
                                             class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{$item->estate->where("user_id",auth()->id())->count()}}</span>
                                     </a>
@@ -60,7 +60,9 @@
 
                             <div class="list-group" id="list-tab" role="">
                                 <a class="list-group-item list-group-item-action" id="list-settings-list"
-                                   href="{{route('add_estate_page')}}" role="tab">ثبت ملک جدید</a>
+                                   href="{{route('add_estate_page')}}" role="tab">ثبت املاک
+
+                                </a>
                             </div>
                             <div class="col-12">
                                 <div class="list-group position-relative" id="list-tab" role="">
@@ -79,7 +81,8 @@
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('all_estates')}}" role="tab"> کل املاک ثبت شده </a>
+                                       href="{{route('all_estates')}}" role="tab">نمایش کل املاک ثبت شده
+                                    </a>
 
                                     <span
                                         class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::all()->count()}}</span>

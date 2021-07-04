@@ -23,12 +23,12 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
+    protected $middleware=[];
     /**
      * Where to redirect users after login.
      *
      * @var string
      */
-    protected $redirectTo = "/admin";
     protected function username(){
         return "phone";
     }

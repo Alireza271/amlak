@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CustomerInfo;
 use App\Models\estate;
+use App\Models\Poster;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -12,6 +13,8 @@ use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
+use Morilog\Jalali\CalendarUtils;
+use Morilog\Jalali\Jalalian;
 
 class AdminController extends Controller
 {
@@ -48,8 +51,8 @@ class AdminController extends Controller
             "phone" => $request->phone,
             "password" => Hash::make($request->password),
             "is_admin" => ($request->user_type == 0) ? 1 : 0,
-            "is_attract" => ($request->user_type == 1) ? 1 : 0,
-            "is_circulation" => ($request->user_type == 2) ? 1 : 0,
+            "is_circulation" => ($request->user_type == 1) ? 1 : 0,
+            "is_attract" => ($request->user_type == 2) ? 1 : 0,
         ]);
         return view("Admin.update_user", compact(["user", "updated_user"]));
     }
@@ -97,7 +100,7 @@ class AdminController extends Controller
     public function customer_info_form(Request $request)
 
     {
-        CustomerInfo::create($request->all());
+       Auth::user()->customersinfo()->create($request->all());
 
         return Redirect:: route('admin');
     }
@@ -113,6 +116,118 @@ class AdminController extends Controller
         $customer_info = CustomerInfo::find($id);
         return view('admin.get_customer_info', ['customer_info' => $customer_info]);
 
+    }
+
+    public function search_customers_info(Request $request)
+    {
+        $estate_type = $request->get("estate_type");
+        $from_date = $request->get("from_date");
+        $to_date = $request->get("to_date");
+
+
+        $max_price = $request->get("max_price");
+        $filter = CustomerInfo::query();
+
+        if ($estate_type != null) {
+            error_log('estate_type');
+
+            $filter = $filter->where("estate_type_id", $estate_type);
+
+        }
+        if ($max_price != null) {
+            error_log('max price');
+
+            $filter = $filter->where('Purchasing_power', '<=', (int)$max_price);
+        }
+
+        if ($from_date != null) {
+            $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
+            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
+            $filter = $filter->whereBetween("created_at", [$from_date, $to_date]);
+        }
+
+        $customers = $filter->paginate(10);
+        $customers->appends($request->all())->links();
+
+
+        return view('admin.customers_info', ['customers_info' => $customers]);
+
+    }
+
+    public function posters_report()
+    {
+        $users = User::query()->where('is_attract', 1)->paginate(10);
+        $posters=Poster::all();
+        return view('admin.posters_report', ['users' => $users,"posters"=>$posters]);
+    }
+
+    public function search_posters_report(Request $request)
+    {
+        $users = User::query()->where('is_attract', 1)->paginate(10);
+        $estate_type = $request->get("estate_type");
+        $from_date = $request->get("from_date");
+        $city = $request->get("city");
+
+        $to_date = $request->get("to_date");
+        $social = $request->get("social_id");
+        $max_price = $request->get("allocate");
+        $attract = $request->get("attract_id");
+        $estate_location_type_id = $request->get("estate_location_type_id");
+
+
+        $filter = Poster::query();
+
+        if ($estate_type != null) {
+            error_log('estate_type');
+
+            $filter = $filter->where("estate_type_id", $estate_type);
+
+        }
+        if ($max_price != null) {
+            error_log('max price');
+            $filter = $filter->where('allocate', '<=', (int)$max_price);
+        }
+
+        if ($city != null) {
+            error_log('city');
+
+            $filter = $filter->where("city_id", $city);
+        }
+
+        if ($social != null) {
+            error_log('social_id');
+
+            $filter = $filter->where('social_id', $social);
+        }
+        if ($attract != null) {
+            error_log('attract');
+
+            $filter = $filter->where('user_id', $attract);
+        }
+        if ($estate_location_type_id != null) {
+            error_log('estate_location_type_id');
+
+            $filter = $filter->where('estate_location_type_id', $estate_location_type_id);
+        }
+
+        if ($from_date != null) {
+            $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
+            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('tomorrow')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
+            $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
+        }
+
+        $users = array_unique($filter->pluck('user_id')->toArray());
+
+        try {        $users= User::query()->findMany($users)->toQuery()->paginate(10);
+
+        }catch (\Exception $e){
+            $users=[];
+        }
+        $posters = $filter->paginate(10);
+
+        $posters->appends($request->all())->links();
+
+        return view('admin.posters_report', ['posters' => $posters,'users'=>$users]);
     }
 
 

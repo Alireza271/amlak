@@ -16,6 +16,7 @@ class CreateCustomerInfosTable extends Migration
         Schema::create('customer_infos', function (Blueprint $table) {
             $table->id();
             $table->string('name')->nullable();
+            $table->string('user_id')->nullable();
             $table->string('count')->nullable();
             $table->string('with_family')->nullable();
             $table->string('job')->nullable();

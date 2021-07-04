@@ -36,24 +36,24 @@
                                                 <div class="card" style="border-radius: 1rem;">
                                                     <div class="card-body p-5">
 
-                                                        <h1 class="mb-5 text-center">Checkout Form</h1>
+                                                        <h1 class="mb-5 text-center">نام فرم</h1>
 
-                                                        <form method="POST" action="{{route('poster_form')}}">
+                                                        <form onsubmit=" DoSubmit();" method="POST" action="{{route('poster_form')}}">
                                                             {{csrf_field()}}
                                                             <!-- 2 column grid layout with text inputs for the first and last names -->
                                                             <div class="form-outline mb-4">
                                                                 <label class="form-label" for="form6Example3">نام و نام
                                                                     خانوادگی </label>
-                                                                <input name="name" type="text" id="form6Example3"
+                                                                <input required name="name" type="text" id="form6Example3"
                                                                        class="form-control"/>
 
                                                             </div>
 
                                                             <!-- Text input -->
                                                             <div class="form-outline mb-4">
-                                                                <label class="form-label" for="form6Example3">تلفن
+                                                                <label  class="form-label" for="form6Example3">تلفن
                                                                     همراه</label>
-                                                                <input name="phone" type="number" id="form6Example3"
+                                                                <input required name="phone" type="number" id="form6Example3"
                                                                        class="form-control"/>
 
                                                             </div>
@@ -106,8 +106,8 @@
                                                             <div class="form-outline mb-4">
                                                                 <label class="form-label"
                                                                        for="form6Example6">بودجه خرید</label>
-                                                                <input name="allocate" type="number" id="form6Example6"
-                                                                       class="form-control"/>
+                                                                <input required name="allocate" type="text" id="allocate"
+                                                                       class="form-control" onkeyup="javascript:this.value=separate(this.value);" />
 
                                                             </div>
                                                                 <div class="form-outline mb-4">
@@ -164,4 +164,24 @@
             </div>
         </div>
     </div>
+    <script>
+        function separate(Number)
+        {
+            Number+= '';
+            Number= Number.replace(',', '');
+            x = Number.split('.');
+            y = x[0];
+            z= x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(y))
+                y= y.replace(rgx, '$1' + ',' + '$2');
+            return y+ z;
+        }
+
+        function DoSubmit(){
+         var value=$("#allocate").val();
+            $("#allocate").val(value.replaceAll(',',''));
+            return true;
+        }
+    </script>
 @endsection

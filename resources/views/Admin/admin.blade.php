@@ -24,7 +24,7 @@
                                             <a href="{{route("search_estate",['estate_type'=>$type->id ,
     "all_estate"=>1,
 ])}}" type="button" class="col-3 btn btn-primary position-relative  m-1 ">
-                                                {{$type->name}}
+                                                نمایش {{$type->name}}
                                                 <span
                                                     class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::query()->where('estate_type_id',$type->id)->count()}}</span>
                                             </a>
@@ -61,7 +61,7 @@
 
                                 <div class="list-group" id="list-tab" role="">
                                     <a class="list-group-item list-group-item-action" id="list-settings-list"
-                                       href="{{route('register')}}" role="tab">ثبت کاربر جدید</a>
+                                       href="{{route('register')}}" role="tab">ثبت نام کاربر جدید</a>
                                     <a class="list-group-item list-group-item-action" id="list-settings-list"
                                        href="{{route('users')}}" role="tab">نمایش کاربران</a>
                                 </div>
@@ -71,7 +71,8 @@
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('all_estates')}}" role="tab"> کل املاک ثبت شده </a>
+                                       href="{{route('all_estates')}}" role="tab"> نمایش کل املاک ثبت شده
+                                    </a>
 
                                     <span
                                         class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::all()->count()}}</span>
@@ -84,7 +85,8 @@
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('customer_info_form_page')}}" role="tab"> ثبت  اطاعات مشتری </a>
+                                       href="{{route('customer_info_form_page')}}" role="tab">ثبت اطلاعات مشتری حضوری
+                                    </a>
                                 </div>
                             </div>
                             <div class="col-12">
@@ -92,8 +94,29 @@
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('customers_info')}}" role="tab">اطاعات مشتری </a>
+                                       href="{{route('customers_info')}}" role="tab">نمایش اطلاعات مشتری حضوری
+                                    </a>
                                 </div>
+                            </div>
+
+
+
+                            <div class="list-group position-relative" id="list-tab" role="">
+
+
+                                <a class="list-group-item " id="list-settings-list"
+                                   href="{{route('posters')}}" role="tab">نمایش اطلاعات مشتری(فعالیت روزانه )
+                                    </a>
+
+                            </div>
+                            <div class="list-group position-relative" id="list-tab" role="">
+
+
+                                <a class="list-group-item " id="list-settings-list"
+                                   href="{{route('posters_report')}}" role="tab">  نمایش اطلاعات مشتری(فعالیت روزانه )
+                                آمار
+                                </a>
+
                             </div>
                         </div>
 

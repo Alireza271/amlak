@@ -291,6 +291,14 @@
 
                         </div>
                     </div>
+                    <div style="background: #3dd5f3">
+                        <label>
+                            مجموع کل:
+                        </label>
+                        <label>
+                            {{$estates->total()}}                            </label>
+                    </div>
+
                 </form>
             </div>
 
@@ -307,6 +315,7 @@
                         <th scope="col"></th>
                         <th scope="col">شماره ملک</th>
                         <th scope="col"> نام مالک</th>
+                        <th scope="col">ثبت کننده</th>
                         <th scope="col">تاریخ ثبت</th>
                         <th scope="col">نوع ملک</th>
                         <th scope="col">قیمت</th>
@@ -322,6 +331,7 @@
                                      height="50"></th>
                             <th>{{$estate->id}} <br></th>
                             <td>{{$estate->owner_name}}</td>
+                            <td>{{$estate->user->name}}</td>
                             <td>{{\Morilog\Jalali\CalendarUtils::strftime('%Y-%m-%d', strtotime($estate->created_at))}}</td>
                             <td>{{$estate->estate_type->name}}</td>
                             <td>{{number_format($estate->price)}}</td>
@@ -330,7 +340,7 @@
                                                  type="button" class=" btn btn-outline-primary btn-sm">
                                         مشاهده</a>
 
-                                    @if($estate->user_id==auth()->id())
+                                    @if($estate->user_id==auth()->id()||auth()->user()->is_admin)
                                         <a href={{route('update_estate_page',['id'=>$estate->id])}} type="button"
                                            class="btn btn-outline-success btn-sm"> ویرایش</a>
                                     @endif

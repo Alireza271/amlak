@@ -94,14 +94,28 @@ class circulationController extends Controller
 
     public function update_estate_page($id)
     {
-        $estate = Auth::user()->estate->find($id);
+        if (Auth::user()->is_admin){
+            $estate = estate::find($id);
+
+        }
+        else{
+            $estate = Auth::user()->estate->find($id);
+
+        }
         $estate_type = $estate->estate_type->id;
         return view("circulation.update_estate", ['estate' => $estate, 'estate_type' => $estate_type]);
     }
 
     public function update_estate(Request $request)
     {
-        $estate = Auth::user()->estate->find($request->get('estate_id'));
+        if (Auth::user()->is_admin){
+            $estate = estate::find($request->get('estate_id')   );
+
+        }
+        else{
+            $estate = Auth::user()->estate->find($request->get('estate_id'));
+
+        }
         $estate->update(
             [
                 "estate_location_type_id" => $request->get("estate_location_type"),

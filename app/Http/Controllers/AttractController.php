@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CustomerInfo;
 use App\Models\estate;
 use App\Models\Estate_Images;
 use App\Models\Options;
@@ -51,19 +52,36 @@ class AttractController extends Controller
 
     public function posters()
     {
-        $posters=Auth::user()->posters;
+        if (Auth::user()->is_admin){
+            $posters=Poster::query()->paginate(10);
+
+        }else{
+            $posters=Auth::user()->posters()->paginate(10);
+        }
         return view('attract.posters',compact('posters'));
+
     }
     public function get_poster($id){
+        if (Auth::user()->is_admin){
+            $poster=Poster::find($id);
+        }
+        else{
+            $poster=Auth::user()->posters->find($id);
 
-        $poster=Auth::user()->posters->find($id);
+        }
         return view('attract.get_poster' ,compact('poster'));
 
     }
 
     public function update_poster_page($id){
 
-        $poster=Auth::user()->posters->find($id);
+        if (Auth::user()->is_admin){
+            $poster=Poster::find($id);
+        }
+        else{
+            $poster=Auth::user()->posters->find($id);
+
+        }
 
         return view('attract.poster_form_update',compact('poster'));
 
@@ -71,9 +89,79 @@ class AttractController extends Controller
 
     public function update_poster(Request $request)
     {
-        Auth::user()->posters->find($request->get('id'))->update($request->all());
-        $poster=Auth::user()->posters->find($request->get('id'));
+        if (Auth::user()->is_admin){
+            Poster::find($request->get('id'))->update($request->all());
+            $poster=Poster::find($request->get('id'));
+
+        }
+        else{
+            Auth::user()->posters->find($request->get('id'))->update($request->all());
+            $poster=Auth::user()->posters->find($request->get('id'));
+
+        }
         return view('attract.poster_form_update',compact('poster'));
+
+    }
+
+    public function search_posters(Request $request)
+    {
+        $estate_type = $request->get("estate_type");
+        $from_date = $request->get("from_date");
+        $city = $request->get("city");
+
+        $to_date = $request->get("to_date");
+        $social = $request->get("social_id");
+        $max_price = $request->get("allocate");
+        $attract = $request->get("attract_id");
+        $estate_location_type_id = $request->get("estate_location_type_id");
+
+
+        $filter = Poster::query();
+
+        if ($estate_type != null) {
+            error_log('estate_type');
+
+            $filter = $filter->where("estate_type_id", $estate_type);
+
+        }
+        if ($max_price != null) {
+            error_log('max price');
+            $filter = $filter->where('allocate', '<=', (int)$max_price);
+        }
+
+        if ($city != null) {
+            error_log('city');
+
+            $filter = $filter->where("city_id", $city);
+        }
+
+        if ($social != null) {
+            error_log('social_id');
+
+            $filter = $filter->where('social_id',$social);
+        }
+        if ($attract != null) {
+            error_log('attract');
+
+            $filter = $filter->where('user_id',$attract);
+        }
+        if ($estate_location_type_id != null) {
+            error_log('estate_location_type_id');
+
+            $filter = $filter->where('estate_location_type_id',$estate_location_type_id);
+        }
+
+        if ($from_date != null) {
+            $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
+            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
+            $filter = $filter->whereBetween("created_at", [$from_date, $to_date]);
+        }
+
+        $posters= $filter->paginate(10);
+        $posters->appends($request->all())->links();
+
+
+        return view('attract.posters', ['posters' => $posters]);
 
     }
 

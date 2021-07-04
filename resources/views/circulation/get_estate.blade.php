@@ -220,10 +220,9 @@
                             <br>
                             <div id="parent" class="row row-cols-2">
                                 @foreach($estate->images as $image)
-
-                                    <img id="child" class="custom" src="{{asset('images/'.$image->file_name)}} "
-                                         width="200" height="200">
-
+                                    <a download="{{$image->file_name}}" href="{{asset('images/'.$image->file_name)}}" title="ImageName">
+                                        <img height="200" width="200" alt="ImageName" src="{{asset('images/'.$image->file_name)}}">
+                                    </a>
 
                                 @endforeach
                             </div>

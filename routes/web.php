@@ -36,6 +36,9 @@ Route::prefix('Admin')->middleware("admin")->group(function () {
     Route::post('customer_info_form',[\App\Http\Controllers\AdminController::class,'customer_info_form'])->name('customer_info_form');
     Route::get('customers_info',[\App\Http\Controllers\AdminController::class,'customers_info'])->name('customers_info');
     Route::get('{id}/get_customer_info',[\App\Http\Controllers\AdminController::class,'get_customer_info'])->name('get_customer_info');
+    Route::get('search_customers_info',[\App\Http\Controllers\AdminController::class,'search_customers_info'])->name('search_customers_info');
+    Route::get('posters_report',[\App\Http\Controllers\AdminController::class,'posters_report'])->name('posters_report');
+    Route::get('search_posters_report',[\App\Http\Controllers\AdminController::class,'search_posters_report'])->name('search_posters_report');
 
 
 });
@@ -68,6 +71,7 @@ Route::prefix("attract")->middleware("attract")->group(function () {
     Route::get('/get_poster/{id}', [App\Http\Controllers\AttractController::class, 'get_poster'])->name('get_poster');
     Route::get('/update_poster/{id}', [App\Http\Controllers\AttractController::class, 'update_poster_page'])->name('update_poster_page');
     Route::post('/update_poster', [App\Http\Controllers\AttractController::class, 'update_poster'])->name('update_poster');
+    Route::get('/search_posters', [App\Http\Controllers\AttractController::class, 'search_posters'])->name('search_posters');
 
 });
 

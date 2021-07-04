@@ -34,23 +34,25 @@
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('poster_form')}}" role="tab"> ثبت فرم شمار 1</a>
+                                       href="{{route('poster_form')}}" role="tab"> ثبت اطلاعات مشتری(فعالیت روزانه )
+                                    </a>
 
                                 </div>
                             </div>
                             <div class="col-12">
+{{--                                <div class="list-group position-relative" id="list-tab" role="">--}}
+
+
+{{--                                    <a class="list-group-item " id="list-settings-list"--}}
+{{--                                       href="{{route('form_2_page')}}" role="tab"> ثبت فرم شمار 2</a>--}}
+
+{{--                                </div>--}}
                                 <div class="list-group position-relative" id="list-tab" role="">
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('form_2_page')}}" role="tab"> ثبت فرم شمار 2</a>
-
-                                </div>
-                                <div class="list-group position-relative" id="list-tab" role="">
-
-
-                                    <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('posters')}}" role="tab">فرم های ثبت شده 1</a>
+                                       href="{{route('posters')}}" role="tab">نمایش اطلاعات مشتری(فعالیت روزانه )
+                                    </a>
 
                                 </div>
 

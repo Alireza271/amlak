@@ -53,4 +53,9 @@ class User extends Authenticatable
         return $this->hasMany(Poster::class);
     }
 
+    public function customersinfo()
+    {
+        return $this->hasMany(CustomerInfo::class);
+    }
+
 }

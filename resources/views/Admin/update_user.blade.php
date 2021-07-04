@@ -92,7 +92,7 @@
                                     <div class="form-check">
                                         <input class="form-check-input" type="radio" name="user_type" value="1">
                                         <label class="form-check-label" for="exampleRadios2">
-                                            کاربر 1
+                                          گردش
 
                                         </label>
                                     </div>
@@ -100,7 +100,7 @@
                                         <input class="form-check-input" type="radio" name="user_type" value="2" >
                                         <label class="form-check-label" for="exampleRadios3">
 
-                                            کاربر 2 </label>
+                                            جذب</label>
                                     </div>
                                 </div>
                             </div>
