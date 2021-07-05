@@ -23,7 +23,6 @@ class LoginController extends Controller
 
     use AuthenticatesUsers;
 
-    protected $middleware=[];
     /**
      * Where to redirect users after login.
      *

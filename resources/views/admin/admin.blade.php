@@ -105,21 +105,20 @@
                             </div>
 
 
-
                             <div class="list-group position-relative" id="list-tab" role="">
 
 
                                 <a class="list-group-item " id="list-settings-list"
                                    href="{{route('posters')}}" role="tab">نمایش اطلاعات مشتری(فعالیت روزانه )
-                                    </a>
+                                </a>
 
                             </div>
                             <div class="list-group position-relative" id="list-tab" role="">
 
 
                                 <a class="list-group-item " id="list-settings-list"
-                                   href="{{route('posters_report')}}" role="tab">  نمایش اطلاعات مشتری(فعالیت روزانه )
-                                آمار
+                                   href="{{route('posters_report')}}" role="tab"> نمایش اطلاعات مشتری(فعالیت روزانه )
+                                    آمار
                                 </a>
 
                             </div>

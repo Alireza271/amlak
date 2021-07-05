@@ -17,7 +17,7 @@ class circulationMiddleware
      */
     public function handle(Request $request, Closure $next)
     {
-        if (Auth::user()->is_circulation||Auth::user()->is_admin) {
+        if (Auth::check() && Auth::user()->is_circulation||Auth::user()->is_admin) {
             return $next($request);
         }
         return abort(404);
