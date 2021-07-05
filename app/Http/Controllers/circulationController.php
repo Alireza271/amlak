@@ -63,13 +63,13 @@ class circulationController extends Controller
 
                 if ($i) {
                     $img = Image::make($file->getRealPath())->resize(100, 100);
-                    $img->save('/home1/shpourir/laravel/public_html/images/thumbnails/' . $fileName, 80);
+                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
 
                     $estate->thumbnail = $fileName;
                     $estate->save();
                     $i = false;
                 }
-                $file->move('/home1/shpourir/laravel/public_html/images/', $fileName);
+                $file->move('/home1/shpourir/public_html/images/', $fileName);
 
                 $estate->fresh()->images()->create([
                         'file_name' => $fileName,
