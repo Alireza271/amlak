@@ -64,8 +64,13 @@
                                        href="{{route('register')}}" role="tab">ثبت نام کاربر جدید</a>
                                     <a class="list-group-item list-group-item-action" id="list-settings-list"
                                        href="{{route('users')}}" role="tab">نمایش کاربران</a>
+                                    <a class="list-group-item list-group-item-action" id="list-settings-list"
+                                       href="{{route('add_estate_page')}}" role="tab">ثبت املاک
+
+                                    </a>
                                 </div>
                             </div>
+
                             <div class="col-12">
                                 <div class="list-group position-relative" id="list-tab" role="">
 
