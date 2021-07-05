@@ -63,13 +63,13 @@ class circulationController extends Controller
 
                 if ($i) {
                     $img = Image::make($file->getRealPath())->resize(100, 100);
-                    $img->save(public_path('images/thumbnails/' . $fileName), 80);
+                    $img->save(asset('images/thumbnails/' . $fileName), 80);
 
                     $estate->thumbnail = $fileName;
                     $estate->save();
                     $i = false;
                 }
-                $file->move(public_path('images'), $fileName);
+                $file->move(asset('images'), $fileName);
 
                 $estate->fresh()->images()->create([
                         'file_name' => $fileName,
