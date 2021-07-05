@@ -21,20 +21,20 @@ class AdminController extends Controller
     public function index()
     {
 
-        return view("Admin.admin");
+        return view("admin.admin");
     }
 
     public function users(Request $request)
     {
 
         $users = User::all();
-        return view('Admin.users', compact('users'));
+        return view('admin.users', compact('users'));
     }
 
     public function update_user_page($id)
     {
         $user = User::find($id);
-        return view("Admin.update_user", compact('user'));
+        return view("admin.update_user", compact('user'));
     }
 
     public function update_user(Request $request)
@@ -54,7 +54,7 @@ class AdminController extends Controller
             "is_circulation" => ($request->user_type == 1) ? 1 : 0,
             "is_attract" => ($request->user_type == 2) ? 1 : 0,
         ]);
-        return view("Admin.update_user", compact(["user", "updated_user"]));
+        return view("admin.update_user", compact(["user", "updated_user"]));
     }
 
     public function delete_user($id)
@@ -69,7 +69,7 @@ class AdminController extends Controller
     {
         $query = $request->get("query");
         $users = User::where("phone", "LIKE", '%' . $query . '%')->orWhere('name', "LIKE", '%' . $query . '%')->get();
-        return view('Admin.users', compact('users'));
+        return view('admin.users', compact('users'));
     }
 
     public function get_user($id)

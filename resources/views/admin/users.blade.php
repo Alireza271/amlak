@@ -67,7 +67,7 @@
                                             <a type="button" class="btn btn-danger" onclick="function ff(id){
 
                                                 if(confirm('آیا میخواهید ادامه دهید؟')) {
-                                                window.location.href ='/Admin/users/delete/'+id
+                                                window.location.href ='/admin/users/delete/'+id
 
                                                 }
                                                 }
