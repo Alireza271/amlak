@@ -55,7 +55,7 @@
 ])}}" type="button" class="col-3 btn btn-primary position-relative  m-1 ">
                                 {{$type->name}}
                                 <span
-                                    class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::query()->where('estate_type_id',$type->id)->count()}}</span>
+                                    class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::query()->where('estate_type_id',$type->id)->where('user_id',$user->id)->count()}}</span>
                             </a>
 
                         @endforeach
