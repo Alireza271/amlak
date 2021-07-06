@@ -21,8 +21,5 @@ class City extends Model
         return $this->hasMany(Location::class);
     }
 
-    public function Posters()
-    {
-        return $this->hasMany(Poster::class);
-    }
+
 }

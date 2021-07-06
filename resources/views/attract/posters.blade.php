@@ -26,7 +26,7 @@
                                         <select id="city_dropdown" name="city" class="form-select">
                                             <option value="">یکی از شهر ها را انتخاب کنید</option>
 
-                                            @foreach(\App\Models\City::all() as $city)
+                                            @foreach(\App\Models\AllCities::all() as $city)
                                                 <option @if(request("city")==$city->id) selected
                                                         @endif value="{{$city->id}}">{{$city->name}}</option>
                                             @endforeach

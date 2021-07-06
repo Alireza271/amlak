@@ -68,7 +68,7 @@
                                                                        for="form6Example4">شهر</label>
                                                                 <select id="city_dropdown" name="city_id"
                                                                         class="form-select col-4" required>
-                                                                    @foreach(\App\Models\City::all() as $city)
+                                                                    @foreach(\App\Models\AllCities::all() as $city)
                                                                         <option
                                                                             @if($poster->city_id==$city->id)
                                                                             SELECTED

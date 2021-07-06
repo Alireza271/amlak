@@ -24,7 +24,7 @@ class Poster extends Model
 
     public function city()
     {
-        return $this->belongsTo(City::class);
+        return $this->belongsTo(AllCities::class);
     }
 
     public function estate_type()
