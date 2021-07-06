@@ -56,7 +56,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form id="amlak" action="{{route('add_estate')}}" class="form-group " method="post"
+                        <form onsubmit=" DoSubmit();" id="amlak" action="{{route('add_estate')}}" class="form-group " method="post"
                               enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class=" ">
@@ -282,8 +282,8 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3">
-                                        <input name="price" type="number" class="form-control"
-                                               aria-label="Recipient's username" aria-describedby="basic-addon2">
+                                        <input id="price_input" name="price" type="text" class="form-control"
+                                               aria-label="Recipient's username" aria-describedby="basic-addon2" onkeyup="javascript:this.value=separate(this.value);">
                                         <span class="input-group-text" id="basic-addon2">تومان</span>
                                     </div>
                                 </div>
@@ -583,6 +583,27 @@
             function closee(id) {
                 $("#" + id.id).attr("hidden", true);
                 console.log($("#image_upload").val());
+            }
+
+
+
+            function separate(Number)
+            {
+                Number+= '';
+                Number= Number.replace(',', '');
+                x = Number.split('.');
+                y = x[0];
+                z= x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(y))
+                    y= y.replace(rgx, '$1' + ',' + '$2');
+                return y+ z;
+            }
+
+            function DoSubmit(){
+                var price=$("#price_input").val();
+                $("#price_input").val(price.replaceAll(',',''));
+
             }
         </script>
 @endsection

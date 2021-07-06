@@ -37,7 +37,7 @@
 
                                                     <h1 class="mb-5 text-center">Checkout Form</h1>
 
-                                                    <form method="POST" action="{{route('customer_info_form')}}">
+                                                    <form  onsubmit=" DoSubmit();" method="POST" action="{{route('customer_info_form')}}">
                                                     {{csrf_field()}}
                                                     <!-- 2 column grid layout with text inputs for the first and last names -->
                                                         <div class="form-outline mb-4">
@@ -124,8 +124,8 @@
                                                             <div class="form-outline mb-4">
                                                                 <label class="form-label" for="form6Example7">قدرت
                                                                     خرید</label>
-                                                                <input name="Purchasing_power" type="number"
-                                                                       id="form6Example6"
+                                                                <input onkeyup="javascript:this.value=separate(this.value);" name="Purchasing_power" type="text"
+                                                                       id="Purchasing_power"
                                                                        class="form-control"/>
 
                                                             </div>
@@ -197,4 +197,24 @@
         </div>
 
     </div>
+    <script>
+        function separate(Number)
+        {
+            Number+= '';
+            Number= Number.replace(',', '');
+            x = Number.split('.');
+            y = x[0];
+            z= x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(y))
+                y= y.replace(rgx, '$1' + ',' + '$2');
+            return y+ z;
+        }
+
+        function DoSubmit(){
+            var price=$("#Purchasing_power").val();
+            $("#Purchasing_power").val(price.replaceAll(',',''));
+
+        }
+    </script>
 @endsection

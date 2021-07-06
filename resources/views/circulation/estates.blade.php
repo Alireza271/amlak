@@ -28,7 +28,7 @@
 
                 </div>
 
-                <form method="GET" action="{{route('search_estate')}}">
+                <form onsubmit=" DoSubmit();" method="GET" action="{{route('search_estate')}}">
 
                     <div class="input-group float-right col-12 ">
                         <div class="card-group">
@@ -125,12 +125,12 @@
 
                                         <div class="">
                                             <label for=""> حداقل قیمت:</label>
-                                            <input value="{{request('min_price')}}" class="" type="number"
+                                            <input id="min_price" onkeyup="javascript:this.value=separate(this.value);" value="{{request('min_price')}}" class="" type="text"
                                                    name="min_price">
                                         </div>
                                         <div class="">
                                             <label for=""> حداکثر قیمت:</label>
-                                            <input value="{{request("max_price")}}" class="" type="number"
+                                            <input id="max_price" onkeyup="javascript:this.value=separate(this.value);" value="{{request("max_price")}}" class="" type="text"
                                                    name="max_price">
                                         </div>
 
@@ -497,5 +497,31 @@
         });
         $("#from_date").val("{{request('from_date')}}");
         $("#to_date").val("{{request('to_date')}}");
+
+
+
+
+
+        function separate(Number)
+        {
+            Number+= '';
+            Number= Number.replace(',', '');
+            x = Number.split('.');
+            y = x[0];
+            z= x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(y))
+                y= y.replace(rgx, '$1' + ',' + '$2');
+            return y+ z;
+        }
+
+        function DoSubmit(){
+            var min_price=$("#min_price").val();
+            $("#min_price").val(min_price.replaceAll(',',''));
+
+            var max_price=$("#max_price").val();
+            $("#max_price").val(max_price.replaceAll(',',''));
+            return true;
+        }
     </script>
 @endsection

@@ -172,10 +172,10 @@
                                                             <div class="form-outline mb-4">
                                                                 <label class="form-label" for="form6Example7">تاریخ
                                                                     نتیجه</label>
-                                                                <input name="result_date" type="date" id="form6Example6"
+                                                                <input name="result_date"  id="form6Example6"
                                                                        value="{{$poster->result_date}}"
 
-                                                                       class="form-control"/>
+                                                                       class="observer-example-alt"/>
 
                                                             </div>
 
@@ -202,5 +202,16 @@
                 </div>
             </div>
         </div>
+
+
+
     </div>
+
+    <script>
+        $('.observer-example-alt').persianDatepicker({
+            observer: false,
+            format: 'YYYY/MM/DD',
+            altField: '.observer-example'
+        });
+    </script>
 @endsection

@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header">
                     <div class="row">
-                    <form method="GET" action="{{route('search_customers_info')}}">
+                    <form  onsubmit=" DoSubmit();" method="GET" action="{{route('search_customers_info')}}">
 
                         <div class=" input-group float-right col-12 ">
                             <div class="card-group">
@@ -32,7 +32,7 @@
 
                                     <div class="">
                                         <label for=""> حداکثر قیمت:</label>
-                                        <input value="{{request("max_price")}}" class="" type="number"
+                                        <input onkeyup="javascript:this.value=separate(this.value);" id="max_price" value="{{request("max_price")}}" class="" type="text"
                                                name="max_price">
                                     </div>
 
@@ -131,5 +131,26 @@
                 });
                 $("#from_date").val("{{request('from_date')}}");
                 $("#to_date").val("{{request('to_date')}}");
+
+
+                function separate(Number)
+                {
+                    Number+= '';
+                    Number= Number.replace(',', '');
+                    x = Number.split('.');
+                    y = x[0];
+                    z= x.length > 1 ? '.' + x[1] : '';
+                    var rgx = /(\d+)(\d{3})/;
+                    while (rgx.test(y))
+                        y= y.replace(rgx, '$1' + ',' + '$2');
+                    return y+ z;
+                }
+
+                function DoSubmit(){
+                    var price=$("#max_price").val();
+                    $("#max_price").val(price.replaceAll(',',''));
+
+                }
+
             </script>
 @endsection

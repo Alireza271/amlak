@@ -5,7 +5,7 @@
 
         <div class="card">
             <div class="card-header">
-                <form method="GET" action="{{route('search_posters')}}">
+                <form  onsubmit=" DoSubmit();" method="GET" action="{{route('search_posters')}}">
 
                     <div class="input-group float-right col-12 ">
                         <div class="card-group">
@@ -71,7 +71,7 @@
 
                                     <div class="">
                                         <label for=""> حداکثر قیمت:</label>
-                                        <input value="{{request("allocate")}}" class="" type="number"
+                                        <input onkeyup="javascript:this.value=separate(this.value);" id="max_price" value="{{request("allocate")}}" class="" type="text"
                                                name="allocate">
                                     </div>
 
@@ -130,7 +130,8 @@
                                 <thead>
 
                                 <th>نام و نام خانوادگی</th>
-                                <th>تلفن</th>
+                                <th>ثبت کننده</th>
+                                <th>تاریخ </th>
                                 <th>شهر</th>
                                 <th>محل آگهی</th>
                                 <th>بودجه خرید</th>
@@ -143,7 +144,8 @@
                                 @foreach($posters as $poster)
                                     <tr>
                                         <td>{{$poster->name}}</td>
-                                        <td>{{$poster->phone}}</td>
+                                        <td>{{$poster->user->name}}</td>
+                                        <td>{{\Morilog\Jalali\CalendarUtils::strftime('%Y-%m-%d', strtotime($poster->created_at))}}</td>
                                         <td>{{$poster->city->name}}</td>
                                         <td>{{$poster->social->name}}</td>
                                         <td>{{$poster->allocate}}</td>
@@ -180,7 +182,26 @@
     });
     $("#from_date").val("{{request('from_date')}}");
     $("#to_date").val("{{request('to_date')}}");
-</script>
+
+
+    function separate(Number)
+    {
+        Number+= '';
+        Number= Number.replace(',', '');
+        x = Number.split('.');
+        y = x[0];
+        z= x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(y))
+            y= y.replace(rgx, '$1' + ',' + '$2');
+        return y+ z;
+    }
+
+    function DoSubmit(){
+        var price=$("#max_price").val();
+        $("#max_price").val(price.replaceAll(',',''));
+
+    }
 </script>
 
 @endsection
