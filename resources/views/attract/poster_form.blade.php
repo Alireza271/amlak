@@ -133,10 +133,10 @@
 
                                                             </div>
                                                             <div class="form-outline mb-4">
-                                                                <label class="form-label" for="form6Example7">تاریخ
+                                                                <label class="form-label " for="form6Example7">تاریخ
                                                                     نتیجه</label>
-                                                                <input name="result_date" type="date" id="form6Example6"
-                                                                       class="form-control"/>
+                                                                <input name="result_date"  id="form6Example6"
+                                                                       class="observer-example-alt"/>
 
                                                             </div>
 
@@ -183,5 +183,14 @@
             $("#allocate").val(value.replaceAll(',',''));
             return true;
         }
+
+
+
+
+        $('.observer-example-alt').persianDatepicker({
+            observer: false,
+            format: 'YYYY/MM/DD',
+            altField: '.observer-example'
+        });
     </script>
 @endsection
