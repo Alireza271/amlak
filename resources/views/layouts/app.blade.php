@@ -27,7 +27,7 @@
 {{--    <script src="https://unpkg.com/persian-datepicker@latest/dist/js/persian-datepicker.min.js"></script>--}}
 
 
-    <!-- Latest compiled JavaScript -->
+<!-- Latest compiled JavaScript -->
 </head>
 <body>
 <div id="app">
@@ -73,9 +73,49 @@
                                 {{ __('خروج') }}
                             </a>
 
-                            <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                @csrf
-                            </form>
+                        @if(\Illuminate\Support\Facades\Auth::check())
+                            <li class="nav-item">
+                                <a class="dropdown-item"
+                                   @if(\Illuminate\Support\Facades\Auth::user()->is_admin) href="{{route('admin')}}"
+                                   @endif
+                                   @if(\Illuminate\Support\Facades\Auth::user()->is_attract) href="{{route('attract')}}"
+                                   @endif
+                                   @if(\Illuminate\Support\Facades\Auth::user()->is_circulation) href="{{route('circulation')}}" @endif
+
+                                >صفحه نخست</a>
+                            </li>
+                            @if(\Illuminate\Support\Facades\Auth::user()->is_admin||\Illuminate\Support\Facades\Auth::user()->is_circulation)
+                                <li class="nav-item">
+                                    <a class="dropdown-item"
+                                       href="{{route('add_estate_page')}}"
+                                    >ثبت املاک</a>
+                                </li>
+                            @endif
+                            @if(\Illuminate\Support\Facades\Auth::user()->is_admin)
+                                <li class="nav-item">
+                                    <a class="dropdown-item"
+                                       href="{{route('register')}}"
+                                    >ثبت کاربر</a>
+                                </li>
+                            @endif
+                            @if(\Illuminate\Support\Facades\Auth::user()->is_admin)
+                                <li class="nav-item">
+                                    <a class="dropdown-item"
+                                       href="{{route('customer_info_form_page')}}"
+                                    >ثبت اطلاعات مشتری </a>
+                                </li>
+                            @endif
+                            @if(\Illuminate\Support\Facades\Auth::user()->is_attract)
+                                <li class="nav-item">
+                                    <a class="dropdown-item"
+                                       href="{{route('poster_form_page')}}"
+                                    >ثبت فعالیت روزانه </a>
+                                </li>
+                            @endif
+                        @endif
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                         </li>
                     @endguest
                 </ul>
