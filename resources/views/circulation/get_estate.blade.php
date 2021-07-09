@@ -101,6 +101,19 @@
                                     <label class="fw-bold" style="font-size: large">سال ساخت:</label>
                                     <label class="w-50">{{$estate->building_date}}</label>
                                 </div>
+                                    <div class=" card-group justify-content-between">
+                                    <label class="fw-bold" style="font-size: large">تعداد طبقات:</label>
+                                    <label class="w-50">{{$estate->floors_count}}</label>
+                                </div>
+                                    <div class=" card-group justify-content-between">
+                                    <label class="fw-bold" style="font-size: large">طبقه:</label>
+                                    <label class="w-50">{{$estate->floors}}</label>
+                                </div>
+
+                                    <div class=" card-group justify-content-between">
+                                    <label class="fw-bold" style="font-size: large">واحد:</label>
+                                    <label class="w-50">{{$estate->module}}</label>
+                                </div>
                                 <hr>
                             @endif
                         @endif
