@@ -22,7 +22,7 @@
                                     <div class="row col-12  m-2 justify-content-around p-3">
                                         @foreach(\App\Models\estate_type::all() as $type)
                                             <a href="{{route("search_estate",['estate_type'=>$type->id ,
-    "all_estate"=>1,
+    "all_estate"=>1,'lock'=>true
 ])}}" type="button" class="col-3 btn btn-primary position-relative  m-1 ">
                                                 نمایش {{$type->name}}
                                                 <span
