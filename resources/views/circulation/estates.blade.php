@@ -12,7 +12,7 @@
 
 @section('content')
 
-    <div class="container ">
+    <div class="container justify-content-center">
         <a class="btn btn-success"
            href="@if(\Illuminate\Support\Facades\Auth::user()->is_circulation){{  route("circulation") }} @elseif(isset($id)) {{route("get_user",["id"=>$custom_filter['selected_user']])}}
 
@@ -20,7 +20,6 @@
            {{route('admin')}}
            @endif">بازگشت</a>
 
-        <div class="card">
             @if(isset($_GET['edited']))
                 <div class="alert alert-success" role="alert">
                     ویرایش ملک با موفقیت انجام شد!
@@ -129,12 +128,14 @@
 
                                         <div class="">
                                             <label for=""> حداقل قیمت:</label>
-                                            <input id="min_price" onkeyup="javascript:this.value=separate(this.value);" value="{{request('min_price')}}" class="" type="text"
+                                            <input id="min_price" onkeyup="javascript:this.value=separate(this.value);"
+                                                   value="{{request('min_price')}}" class="" type="text"
                                                    name="min_price">
                                         </div>
                                         <div class="">
                                             <label for=""> حداکثر قیمت:</label>
-                                            <input id="max_price" onkeyup="javascript:this.value=separate(this.value);" value="{{request("max_price")}}" class="" type="text"
+                                            <input id="max_price" onkeyup="javascript:this.value=separate(this.value);"
+                                                   value="{{request("max_price")}}" class="" type="text"
                                                    name="max_price">
                                         </div>
 
@@ -321,7 +322,27 @@
                         <th scope="col"> نام مالک</th>
                         <th scope="col">ثبت کننده</th>
                         <th scope="col">تاریخ ثبت</th>
-                        <th scope="col">نوع ملک</th>
+                        @if(request('estate_type')==1&&request('lock'))
+                            <th scope="col">متراژ بنا</th>
+                            <th scope="col">تعداد طیقات</th>
+                            <th scope="col">واحد</th>
+                            <th scope="col">طبقه چندم</th>
+                        @elseif(request('estate_type')==2&&request('lock'))
+                            <th scope="col">متراژ زمین</th>
+                            <th scope="col">شهر</th>
+                            <th scope="col">شهرکی یا مستقل</th>
+
+                        @elseif(request('estate_type')==3&&request('lock'))
+                            <th scope="col">متراژ زمین</th>
+                            <th scope="col">متراژ بنا</th>
+                            <th scope="col">شهرکی یا مستقل</th>
+
+                        @else
+                            <th scope="col">نوع ملک</th>
+                        @endif
+
+                        <th scope="col">جنگلی یا ساحلی</th>
+                        <th scope="col">مدارک</th>
                         <th scope="col">قیمت</th>
                     </tr>
                     </thead>
@@ -337,7 +358,31 @@
                             <td>{{$estate->owner_name}}</td>
                             <td>{{$estate->user->name}}</td>
                             <td>{{\Morilog\Jalali\CalendarUtils::strftime('%Y-%m-%d', strtotime($estate->created_at))}}</td>
-                            <td>{{$estate->estate_type->name}}</td>
+
+                            @if(request('estate_type')==1&&request('lock'))
+                                <td >{{$estate->building_area}}</td>
+                                <td >{{$estate->floors_count}}</td>
+                                <td >{{$estate->module}}</td>
+                                <td >{{$estate->floors}}</td>
+                            @elseif(request('estate_type')==2&&request('lock'))
+                                <td >{{$estate->area}}</td>
+                                <td >{{$estate->city->name}}</td>
+                                <td >{{$estate->building_type->name}}</td>
+
+                            @elseif(request('estate_type')==3&&request('lock'))
+                                <td >{{$estate->area}}</td>
+                                <td >{{$estate->building_area}}</td>
+                                <td >{{$estate->building_type->name}}</td>
+
+                            @else
+                                <td>{{$estate->estate_type->name}}</td>
+                            @endif
+
+                            <td >{{$estate->estate_location_type->name}}</td>
+                            <td >@foreach($estate->documents as $document)
+                            {{$document->name. " - "}}
+                                @endforeach
+                            </td>
                             <td>{{number_format($estate->price)}}</td>
                             <td>
                                 <div class=""><a href="{{route("get_estate",["id"=>$estate->id])}}"
@@ -503,11 +548,7 @@
         $("#to_date").val("{{request('to_date')}}");
 
 
-
-
-
-        function separate(Number)
-        {
+        function separate(Number) {
             var ss = parseInt(Number.replaceAll(',', ''));
             if (isNaN(ss)) {
                 return '';
@@ -517,12 +558,12 @@
             return ss.toLocaleString();
         }
 
-        function DoSubmit(){
-            var min_price=$("#min_price").val();
-            $("#min_price").val(min_price.replaceAll(',',''));
+        function DoSubmit() {
+            var min_price = $("#min_price").val();
+            $("#min_price").val(min_price.replaceAll(',', ''));
 
-            var max_price=$("#max_price").val();
-            $("#max_price").val(max_price.replaceAll(',',''));
+            var max_price = $("#max_price").val();
+            $("#max_price").val(max_price.replaceAll(',', ''));
             return true;
         }
     </script>
