@@ -142,9 +142,10 @@ class AdminController extends Controller
 
         if ($from_date != null) {
             $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
-            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
-            $filter = $filter->whereBetween("created_at", [$from_date, $to_date]);
+            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
+            $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
         }
+
 
         $customers = $filter->paginate(10);
         $customers->appends($request->all())->links();
@@ -212,7 +213,7 @@ class AdminController extends Controller
 
         if ($from_date != null) {
             $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
-            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('tomorrow')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
+            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
             $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
         }
 

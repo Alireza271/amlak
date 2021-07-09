@@ -20,7 +20,7 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form id="amlak" action="{{route('update_estate')}}" class="form-group " method="post">
+                        <form onsubmit=" DoSubmit();" id="amlak" action="{{route('update_estate')}}" class="form-group " method="post">
                             {{csrf_field()}}
                             <input hidden name="estate_id" value="{{$estate->id}}">
                             <div>
@@ -309,7 +309,9 @@
                                         </label>
                                         <div class="col-8 ">
                                             <div class="input-group mb-3">
-                                                <input name="price" value="{{$estate->price}}" type="number"
+                                                <input id="price_input"
+                                                    onkeyup="javascript:this.value=separate(this.value);"
+                                                       name="price" value="{{$estate->price}}" type="text"
                                                        class="form-control"
                                                        aria-label="Recipient's username"
                                                        aria-describedby="basic-addon2">
@@ -473,6 +475,24 @@
                     vila();
                 }
             }
+
+
+                     function separate(Number)
+                     {
+                         var ss = parseInt(Number.replaceAll(',', ''));
+                         if (isNaN(ss)) {
+                             return '';
+                         }
+                         console.log(ss);
+
+                         return ss.toLocaleString();
+                     }
+
+                     function DoSubmit(){
+                         var price=$("#price_input").val();
+                         $("#price_input").val(price.replaceAll(',',''));
+
+                     }
 
         </script>
 @endsection

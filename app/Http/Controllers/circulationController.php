@@ -151,7 +151,7 @@ class circulationController extends Controller
 
         $estate->fresh()->vila_options()->detach();
         $estate->fresh()->vila_options()->attach($request->get('vila_option'));
-        return redirect(route('update_estate_page', ["status" => 'ok', 'id' => $request->get('estate_id')]));
+        return redirect(route('estates', ["edited" => 'ok']));
     }
 
     public function get_estate($id)
@@ -373,8 +373,10 @@ class circulationController extends Controller
 
             if ($from_date != null) {
                 $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
-                $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('last sunday')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
-                $filter = $filter->whereBetween("created_at", [$from_date, $to_date]);
+                $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
+
+                $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
+
             }
         }
 

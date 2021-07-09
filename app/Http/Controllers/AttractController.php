@@ -41,7 +41,8 @@ class AttractController extends Controller
         $poster = Poster::create($request->all());
         $poster->user_id = \auth()->id();
         $poster->save();
-        return view('attract.poster_form');
+
+        return redirect(route('posters',['status'=>'ok']));
     }
 
     public function form_2()
@@ -153,7 +154,7 @@ class AttractController extends Controller
 
         if ($from_date != null) {
             $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
-            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->format('Y-m-d');
+            $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
             $filter = $filter->whereBetween("created_at", [$from_date, $to_date]);
         }
 

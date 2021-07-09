@@ -21,7 +21,11 @@
            @endif">بازگشت</a>
 
         <div class="card">
-
+            @if(isset($_GET['edited']))
+                <div class="alert alert-success" role="alert">
+                    ویرایش ملک با موفقیت انجام شد!
+                </div>
+            @endif
             <div class="card-header">
 
                 <div class="card-header ">{{ __('املاک ثبت شده') }}
@@ -504,15 +508,13 @@
 
         function separate(Number)
         {
-            Number+= '';
-            Number= Number.replace(',', '');
-            x = Number.split('.');
-            y = x[0];
-            z= x.length > 1 ? '.' + x[1] : '';
-            var rgx = /(\d+)(\d{3})/;
-            while (rgx.test(y))
-                y= y.replace(rgx, '$1' + ',' + '$2');
-            return y+ z;
+            var ss = parseInt(Number.replaceAll(',', ''));
+            if (isNaN(ss)) {
+                return '';
+            }
+            console.log(ss);
+
+            return ss.toLocaleString();
         }
 
         function DoSubmit(){

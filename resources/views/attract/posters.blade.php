@@ -4,8 +4,13 @@
     <div class="container">
 
         <div class="card">
+            @if(isset($_GET['status']))
+                <div class="alert alert-success" role="alert">
+                    ثبت ملک با موفقیت انجام شد!
+                </div>
+            @endif
             <div class="card-header">
-                <form  onsubmit=" DoSubmit();" method="GET" action="{{route('search_posters')}}">
+                <form onsubmit=" DoSubmit();" method="GET" action="{{route('search_posters')}}">
 
                     <div class="input-group float-right col-12 ">
                         <div class="card-group">
@@ -39,8 +44,9 @@
                                             <option value="">....</option>
 
                                             @foreach(\App\Models\Estate_Location_type::all() as $Estate_Location_type)
-                                                <option @if(request("estate_location_type_id")==$Estate_Location_type->id) selected
-                                                        @endif value="{{$Estate_Location_type->id}}">{{$Estate_Location_type->name}}</option>                                            @endforeach
+                                                <option
+                                                    @if(request("estate_location_type_id")==$Estate_Location_type->id) selected
+                                                    @endif value="{{$Estate_Location_type->id}}">{{$Estate_Location_type->name}}</option>                                            @endforeach
                                         </select>
                                     </div>
                                     <div id="social">
@@ -71,7 +77,8 @@
 
                                     <div class="">
                                         <label for=""> حداکثر قیمت:</label>
-                                        <input onkeyup="javascript:this.value=separate(this.value);" id="max_price" value="{{request("allocate")}}" class="" type="text"
+                                        <input onkeyup="javascript:this.value=separate(this.value);" id="max_price"
+                                               value="{{request("allocate")}}" class="" type="text"
                                                name="allocate">
                                     </div>
 
@@ -131,9 +138,11 @@
 
                                 <th>نام و نام خانوادگی</th>
                                 <th>ثبت کننده</th>
-                                <th>تاریخ </th>
+                                <th>تاریخ</th>
                                 <th>شهر</th>
                                 <th>محل آگهی</th>
+                                <th>نوع ملک</th>
+                                <th>...</th>
                                 <th>بودجه خرید</th>
 
                                 <th></th>
@@ -148,6 +157,8 @@
                                         <td>{{\Morilog\Jalali\CalendarUtils::strftime('%Y-%m-%d', strtotime($poster->created_at))}}</td>
                                         <td>{{$poster->city->name}}</td>
                                         <td>{{$poster->social->name}}</td>
+                                        <td>{{$poster->estate_type->name}}</td>
+                                        <td>{{$poster->estate_location_type->name}}</td>
                                         <td>{{$poster->allocate}}</td>
                                         <td>
                                             <a href="{{route('get_poster',['id'=>$poster->id])}}" id="show"
@@ -174,34 +185,32 @@
         </div>
     </div>
 
-<script>
-    $('.observer-example-alt').persianDatepicker({
-        observer: false,
-        format: 'YYYY/MM/DD',
-        altField: '.observer-example'
-    });
-    $("#from_date").val("{{request('from_date')}}");
-    $("#to_date").val("{{request('to_date')}}");
+    <script>
+        $('.observer-example-alt').persianDatepicker({
+            observer: false,
+            format: 'YYYY/MM/DD',
+            altField: '.observer-example'
+        });
+        $("#from_date").val("{{request('from_date')}}");
+        $("#to_date").val("{{request('to_date')}}");
 
 
-    function separate(Number)
-    {
-        Number+= '';
-        Number= Number.replace(',', '');
-        x = Number.split('.');
-        y = x[0];
-        z= x.length > 1 ? '.' + x[1] : '';
-        var rgx = /(\d+)(\d{3})/;
-        while (rgx.test(y))
-            y= y.replace(rgx, '$1' + ',' + '$2');
-        return y+ z;
-    }
+        function separate(Number) {
 
-    function DoSubmit(){
-        var price=$("#max_price").val();
-        $("#max_price").val(price.replaceAll(',',''));
+            var ss = parseInt(Number.replaceAll(',', ''));
+            if (isNaN(ss)) {
+                return '';
+            }
+            console.log(ss);
 
-    }
-</script>
+            return ss.toLocaleString();
+        }
+
+        function DoSubmit() {
+            var price = $("#max_price").val();
+            $("#max_price").val(price.replaceAll(',', ''));
+
+        }
+    </script>
 
 @endsection
