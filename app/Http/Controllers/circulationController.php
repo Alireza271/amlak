@@ -6,6 +6,7 @@ use App\Models\estate;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Facades\Image;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
@@ -94,25 +95,26 @@ class circulationController extends Controller
 
     public function update_estate_page($id)
     {
-        if (Auth::user()->is_admin){
+        $referer_url = request()->headers->get('referer');
+
+        if (Auth::user()->is_admin) {
             $estate = estate::find($id);
 
-        }
-        else{
+        } else {
             $estate = Auth::user()->estate->find($id);
 
         }
         $estate_type = $estate->estate_type->id;
-        return view("circulation.update_estate", ['estate' => $estate, 'estate_type' => $estate_type]);
+        return view("circulation.update_estate", ['estate' => $estate, 'estate_type' => $estate_type, 'referer_url' => $referer_url]);
     }
 
     public function update_estate(Request $request)
     {
-        if (Auth::user()->is_admin){
-            $estate = estate::find($request->get('estate_id')   );
 
-        }
-        else{
+        if (Auth::user()->is_admin) {
+            $estate = estate::find($request->get('estate_id'));
+
+        } else {
             $estate = Auth::user()->estate->find($request->get('estate_id'));
 
         }
@@ -151,7 +153,14 @@ class circulationController extends Controller
 
         $estate->fresh()->vila_options()->detach();
         $estate->fresh()->vila_options()->attach($request->get('vila_option'));
-        return redirect(route('estates', ["edited" => 'ok']));
+        $params = [];
+
+        $url = parse_url($request->get('referer_url'));
+        if (isset($url['query'])) {
+            parse_str($url['query'], $params);
+        }
+        $params['edited'] = 'ok';
+        return redirect($url['path'] . "?" . http_build_query($params));
     }
 
     public function get_estate($id)
@@ -375,7 +384,7 @@ class circulationController extends Controller
                 $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
                 $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
 
-                $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
+                $filter = $filter->where("created_at", ">=", $from_date)->where('created_at', "<=", $to_date);
 
             }
         }

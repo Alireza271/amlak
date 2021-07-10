@@ -23,6 +23,7 @@
                         <form onsubmit=" DoSubmit();" id="amlak" action="{{route('update_estate')}}" class="form-group " method="post">
                             {{csrf_field()}}
                             <input hidden name="estate_id" value="{{$estate->id}}">
+                            <input hidden name="referer_url" value="{{$referer_url}}">
                             <div>
                                 <div class=" ">
                                     @foreach(\App\Models\Estate_Location_type::all() as $type)
