@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Facades\Image;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
+use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
 class circulationController extends Controller
@@ -415,10 +416,12 @@ class circulationController extends Controller
 
     public function estates_of_day($id = null)
     {
-        if (!isNull($id)) {
+
+        if ($id!=null) {
             $estate = estate::query()->where("user_id", $id)->where("created_at", ">=", Carbon::today())->paginate(10);
             $custom_filter['selected_user'] = $id;
         } elseif (Auth::user()->is_admin) {
+
             $estate = estate::query()->where("created_at", ">=", Carbon::today())->paginate(10);
             $custom_filter ['all_estate'] = 1;
         } else {
@@ -430,7 +433,7 @@ class circulationController extends Controller
 
     public function estates_of_week($id = null)
     {
-        if (!isNull($id)) {
+        if ($id!=null) {
 
             $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->paginate(10);
             $custom_filter['selected_user'] = $id;
@@ -449,7 +452,7 @@ class circulationController extends Controller
 
     public function estates_of_month($id = null)
     {
-        if (!isNull($id)) {
+        if ($id!=null) {
 
             $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->paginate(10);
             $custom_filter['selected_user'] = $id;
@@ -468,7 +471,7 @@ class circulationController extends Controller
 
     public function estates_of_year($id = null)
     {
-        if (!isNull($id)) {
+        if ($id!=null) {
 
             $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365))->paginate(10);
             $custom_filter['selected_user'] = $id;
