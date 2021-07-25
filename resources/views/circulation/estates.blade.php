@@ -26,7 +26,9 @@
                 </div>
             @endif
             <div class="card-header">
-
+@if(isset($_GET['estate_type']))
+    <h2>{{\App\Models\estate_type::find(request('estate_type'))->name}}</h2>
+                @endif
                 <div class="card-header ">{{ __('املاک ثبت شده') }}
 
                 </div>
