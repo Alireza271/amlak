@@ -194,7 +194,12 @@ class circulationController extends Controller
 
 
         $filter = estate::query();
+        if ($estate_type != null) {
+            error_log('estate_type');
 
+            $filter = $filter->where("estate_type_id", $estate_type);
+
+        }
         if (request()->has('all_estate')) {
             $custom_filter ["all_estate"] = $request->get("all_estate");
 
@@ -271,12 +276,7 @@ class circulationController extends Controller
 
             }
 
-            if ($estate_type != null) {
-                error_log('estate_type');
 
-                $filter = $filter->where("estate_type_id", $estate_type);
-
-            }
 
 
             //area
