@@ -215,7 +215,7 @@ class circulationController extends Controller
 
 
         if ($query != null) {
-            $getby_id = estate::query()->where('id',$query)->where('estate_type_id',$estate_type);
+            $getby_id = estate::query()->where([['id',$query],['estate_type_id',$estate_type]]);
 
             if ($getby_id->get()->isNotEmpty()) {
                 $filter=$getby_id;
