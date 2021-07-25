@@ -215,21 +215,23 @@ class circulationController extends Controller
 
 
         if ($query != null) {
-//            $get_by_id = $filter->where("id", $query);
-            if (false) {
-//                $filter = $get_by_id;
-            } else {
+            $getby_id = estate::query()->where('id',$query);
+
+            if ($getby_id->get()->isNotEmpty()) {
+                $filter=$getby_id;
+            }
+            else
+            {
                 if (Auth::user()->is_admin) {
 //جستجو بین همه شماره ها در صورت درخواست ادمین-
-                    $filter = $filter->Where([["owner_phone", 'LIKE', '%' . $query . '%']])
+                    $filter = $filter->Where([["owner_phone", 'LIKE', '%'. $query.'%']])
                         ->orWhere([["owner_name", "LIKE", '%' . $query . '%']])
-                        ->orWhere([["id", "LIKE", '%' . $query . '%']])
                         ->orWhere([["description", "LIKE", '%' . $query . '%']]);
                 } else {
+
                     //جستجو با شماره بین املاک ثبت شده هر کاربر برای خودش
                     $filter = $filter->Where([["owner_phone", 'LIKE', '%' . $query . '%'], ['user_id', \auth()->id()]])
                         ->orWhere([["owner_name", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]])
-                        ->orWhere([["id", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]])
                         ->orWhere([["description", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]]);
                 }
 
