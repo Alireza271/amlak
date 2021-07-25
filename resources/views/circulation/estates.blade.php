@@ -313,7 +313,7 @@
                         {{ session('status') }}
                     </div>
                 @endif
-
+                    <div class="table-responsive">
                 <table class="table " style="direction: rtl">
                     <thead>
                     <tr>
@@ -402,6 +402,7 @@
                     @endforeach
                     </tbody>
                 </table>
+                    </div>
 
             </div>
             {{$estates->links()}}
