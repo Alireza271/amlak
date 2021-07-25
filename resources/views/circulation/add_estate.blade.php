@@ -157,7 +157,7 @@
                                     متراژ زمین:
                                 </label>
                                 <div class="col-8">
-                                    <input type="number" name="area" class="form-control">
+                                    <input required type="number" name="area" class="form-control">
                                 </div>
                             </div>
                             <br>
@@ -167,7 +167,7 @@
                                     متراژ بنا:
                                 </label>
                                 <div class="col-8">
-                                    <input type="number" name="building_area" class="form-control"
+                                    <input required type="number" name="building_area" class="form-control"
                                            id="building_area">
                                 </div>
                             </div>
@@ -180,7 +180,7 @@
                                 </label>
                                 @foreach(\App\Models\Used_type::all() as $Used_type)
                                     <div class="form-check ">
-                                        <input class="form-check-input" name="used_type[]" type="checkbox"
+                                        <input required class="form-check-input" name="used_type[]" type="checkbox"
                                                value="{{$Used_type->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$Used_type->name}}
@@ -197,7 +197,7 @@
                                 </label>
                                 @foreach(\App\Models\vila_options::all() as $option)
                                     <div class="form-check ">
-                                        <input class="form-check-input" name="vila_option[]" type="checkbox"
+                                        <input required class="form-check-input" name="vila_option[]" type="checkbox"
                                                value="{{$option->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$option->name}}
@@ -212,7 +212,7 @@
                                     تعداد طبقات:
                                 </label>
                                 <div class="col-8">
-                                    <input type="number" name="floors_count" class="form-control">
+                                    <input required type="number" name="floors_count" class="form-control">
                                 </div>
                             </div>
 
@@ -222,7 +222,7 @@
                                     واحد:
                                 </label>
                                 <div class="col-8">
-                                    <input type="number" name="module" class="form-control">
+                                    <input required type="number" name="module" class="form-control">
                                 </div>
                             </div>
 
@@ -232,8 +232,8 @@
                                 <label class="form-check-label ">
                                     طبقه چندم:
                                 </label>
-                                <div class="col-8">
-                                    <input type="number" name="floors" class="form-control">
+                                <div  class="col-8">
+                                    <input required type="number" name="floors" class="form-control">
                                 </div>
                             </div>
                             <br>
@@ -244,12 +244,12 @@
                                 <div class="row"><label class=" ">
                                         طول:
                                     </label>
-                                    <input type="number" name="length" class="form-control">
+                                    <input required type="number" name="length" class="form-control">
                                 </div>
                                 <div class="row"><label class="form-check-label ">
                                         عرض:
                                     </label>
-                                    <input type="number" name="width" class="form-control" id="width">
+                                    <input required type="number" name="width" class="form-control" id="width">
                                 </div>
                             </div>
 
@@ -282,7 +282,7 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3">
-                                        <input id="price_input" name="price" type="text" class="form-control"
+                                        <input required id="price_input" name="price" type="text" class="form-control"
                                                aria-label="Recipient's username" aria-describedby="basic-addon2" onkeyup="javascript:this.value=separate(this.value);">
                                         <span class="input-group-text" id="basic-addon2">تومان</span>
                                     </div>
@@ -293,7 +293,7 @@
                                     </label>
                                     @foreach(\App\Models\Conditions_type::all() as $Condition)
                                         <div class="form-check ">
-                                            <input class="form-check-input" name="condition[]" type="checkbox"
+                                            <input  class="form-check-input" name="condition[]" type="checkbox"
                                                    value="{{$Condition->id}}">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 {{$Condition->name}}
@@ -311,7 +311,7 @@
                                 </label>
                                 @foreach(\App\Models\document::all() as $document)
                                     <div class="form-check ">
-                                        <input class="form-check-input" name="document[]" type="checkbox"
+                                        <input  class="form-check-input" name="document[]" type="checkbox"
                                                value="{{$document->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$document->name}}
@@ -341,7 +341,7 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3">
-                                        <textarea type="" name="description" class="form-control "> </textarea>
+                                        <textarea required type="" name="description" class="form-control "> </textarea>
                                     </div>
                                 </div>
                             </div>
@@ -353,7 +353,7 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3">
-                                        <textarea name="address" class="form-control "> </textarea>
+                                        <textarea required name="address" class="form-control "> </textarea>
                                     </div>
                                 </div>
                             </div>

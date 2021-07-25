@@ -57,8 +57,11 @@ class circulationController extends Controller
         $estate->fresh()->options()->attach($request->get('option'));
         $estate->fresh()->vila_options()->attach($request->get('vila_option'));
         $i = true;
-
+        $estate->thumbnail = "defult.png";
+        $estate->save();
         if ($request->has("image")) {
+
+
             foreach ($request->file('image') as $file) {
 
                 $fileName = time() . '.' . $file->getClientOriginalName();
