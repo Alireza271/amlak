@@ -115,7 +115,7 @@
 
                                         <div class="">
                                             <label for=""> حداقل متراژ زمین:</label>
-                                            <input value="{{request("min_area")}}" class="" type="number"
+                                            <input  value="{{request("min_area")}}" class="form-control" type="number"
                                                    name="min_area">
                                         </div>
                                         <div class="">
@@ -131,13 +131,13 @@
                                         <div class="">
                                             <label for=""> حداقل قیمت:</label>
                                             <input id="min_price" onkeyup="javascript:this.value=separate(this.value);"
-                                                   value="{{request('min_price')}}" class="" type="text"
+                                                   value="{{request('min_price')}}" class="form-control" type="text"
                                                    name="min_price">
                                         </div>
                                         <div class="">
                                             <label for=""> حداکثر قیمت:</label>
                                             <input id="max_price" onkeyup="javascript:this.value=separate(this.value);"
-                                                   value="{{request("max_price")}}" class="" type="text"
+                                                   value="{{request("max_price")}}" class="form-control" type="text"
                                                    name="max_price">
                                         </div>
 
@@ -167,12 +167,12 @@
                                         <div class="">
                                             <label for=""> از تاریخ:</label>
                                             <input autocomplete="off" name="from_date" id="from_date"
-                                                   class="observer-example-alt"/>
+                                                   class="observer-example-alt form-control"/>
                                         </div>
                                         <div class="">
                                             <label for=""> تا تاریخ :</label>
                                             <input autocomplete="off" name="to_date" id="to_date"
-                                                   class="observer-example-alt"/>
+                                                   class="observer-example-alt form-control"/>
                                         </div>
 
 
