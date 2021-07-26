@@ -213,40 +213,52 @@ class circulationController extends Controller
             $filter = $filter->where('user_id', Auth::id());
         }
 
-        if ($request->has("date_range")) {
-
-
-            //
-            $custom_filter ["date_range"] = $request->get("date_range");
-            $filter->where('created_at', ">=", $request->get('date_range'));
-        }
-
 
         if ($query != null) {
-            $getby_id = estate::query()->where([['id',$query],['estate_type_id',$estate_type]]);
+            $filter = $filter->where('id', $query);
 
-            if ($getby_id->get()->isNotEmpty()) {
-                $filter=$getby_id;
+            if (!Auth::user()->is_admin) {
+
+                $filter = $filter->where('user_id', Auth::id());
             }
-            else
-            {
-                if (Auth::user()->is_admin) {
-//جستجو بین همه شماره ها در صورت درخواست ادمین-
-                    $filter = $filter->Where([["owner_phone", 'LIKE', '%'. $query.'%']])
-                        ->orWhere([["owner_name", "LIKE", '%' . $query . '%']])
-                        ->orWhere([["description", "LIKE", '%' . $query . '%']]);
-                } else {
-
-                    //جستجو با شماره بین املاک ثبت شده هر کاربر برای خودش
-                    $filter = $filter->Where([["owner_phone", 'LIKE', '%' . $query . '%'], ['user_id', \auth()->id()]])
-                        ->orWhere([["owner_name", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]])
-                        ->orWhere([["description", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]]);
-                }
-
+            if ($estate_type != null) {
+                $filter = $filter->where('estate_type_id', $estate_type);
             }
+
+
+//            $getby_id = estate::query()->where([['id',$query],['estate_type_id',$estate_type]]);
+//
+//
+//            if ($getby_id->get()->isNotEmpty()) {
+//                $filter=$getby_id;
+//            }
+//            else
+//            {
+//                if (Auth::user()->is_admin) {
+////جستجو بین همه شماره ها در صورت درخواست ادمین-
+//                    $filter = $filter->Where([["owner_phone", 'LIKE', '%'. $query.'%']])
+//                        ->orWhere([["owner_name", "LIKE", '%' . $query . '%']])
+//                        ->orWhere([["description", "LIKE", '%' . $query . '%']]);
+//                } else {
+//
+//                    //جستجو با شماره بین املاک ثبت شده هر کاربر برای خودش
+//                    $filter = $filter->Where([["owner_phone", 'LIKE', '%' . $query . '%'], ['user_id', \auth()->id()]])
+//                        ->orWhere([["owner_name", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]])
+//                        ->orWhere([["description", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]]);
+//                }
+//
+//            }
 
         } else {
 
+
+            if ($request->has("date_range")) {
+
+
+                //
+                $custom_filter ["date_range"] = $request->get("date_range");
+                $filter->where('created_at', ">=", $request->get('date_range'));
+            }
 
             if ($city != null) {
                 error_log('city');
@@ -278,8 +290,6 @@ class circulationController extends Controller
                 $filter = $filter->where("location_id", $location);
 
             }
-
-
 
 
             //area
@@ -422,7 +432,7 @@ class circulationController extends Controller
     public function estates_of_day($id = null)
     {
 
-        if ($id!=null) {
+        if ($id != null) {
             $estate = estate::query()->where("user_id", $id)->where("created_at", ">=", Carbon::today())->paginate(10);
             $custom_filter['selected_user'] = $id;
         } elseif (Auth::user()->is_admin) {
@@ -438,7 +448,7 @@ class circulationController extends Controller
 
     public function estates_of_week($id = null)
     {
-        if ($id!=null) {
+        if ($id != null) {
 
             $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->paginate(10);
             $custom_filter['selected_user'] = $id;
@@ -457,7 +467,7 @@ class circulationController extends Controller
 
     public function estates_of_month($id = null)
     {
-        if ($id!=null) {
+        if ($id != null) {
 
             $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->paginate(10);
             $custom_filter['selected_user'] = $id;
@@ -476,7 +486,7 @@ class circulationController extends Controller
 
     public function estates_of_year($id = null)
     {
-        if ($id!=null) {
+        if ($id != null) {
 
             $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365))->paginate(10);
             $custom_filter['selected_user'] = $id;

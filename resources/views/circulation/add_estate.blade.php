@@ -2,13 +2,15 @@
 
 
 <!-- default icons used in the plugin are from Bootstrap 5.x icon library (which can be enabled by loading CSS below) -->
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css" crossorigin="anonymous">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.min.css"
+      crossorigin="anonymous">
 
 <!-- alternatively you can use the font awesome icon library if using with `fas` theme (or Bootstrap 4.x) by uncommenting below. -->
 <!-- link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css" crossorigin="anonymous" -->
 
 <!-- the fileinput plugin styling CSS file -->
-<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/css/fileinput.min.css" media="all"
+      rel="stylesheet" type="text/css"/>
 
 <!-- if using RTL (Right-To-Left) orientation, load the RTL CSS file after fileinput.css by uncommenting below -->
 <!-- link href="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/css/fileinput-rtl.min.css" media="all" rel="stylesheet" type="text/css" /-->
@@ -18,15 +20,18 @@
 
 <!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
     wish to resize images before upload. This must be loaded before fileinput.min.js -->
-<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/plugins/piexif.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/plugins/piexif.min.js"
+        type="text/javascript"></script>
 
 <!-- sortable.min.js is only needed if you wish to sort / rearrange files in initial preview.
     This must be loaded before fileinput.min.js -->
-<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/plugins/sortable.min.js" type="text/javascript"></script>
+<script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/plugins/sortable.min.js"
+        type="text/javascript"></script>
 
 <!-- bootstrap.bundle.min.js below is needed if you wish to zoom and preview file content in a detail modal
     dialog. bootstrap 5.x or 4.x is supported. You can also use the bootstrap js 3.3.x versions. -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
+        crossorigin="anonymous"></script>
 
 <!-- the main fileinput plugin script JS file -->
 <script src="https://cdn.jsdelivr.net/gh/kartik-v/bootstrap-fileinput@5.2.2/js/fileinput.min.js"></script>
@@ -56,7 +61,8 @@
                                 {{ session('status') }}
                             </div>
                         @endif
-                        <form onsubmit=" DoSubmit();" id="amlak" action="{{route('add_estate')}}" class="form-group " method="post"
+                        <form onsubmit=" DoSubmit();" id="amlak" action="{{route('add_estate')}}" class="form-group "
+                              method="post"
                               enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class=" ">
@@ -95,7 +101,8 @@
                                     @foreach(\App\Models\Estate_Location_type::all() as $type)
 
                                         <div class="form-check-inline">
-                                            <input id="estate_location_type" required class="form-check-input" type="radio"
+                                            <input id="estate_location_type" required class="form-check-input"
+                                                   type="radio"
                                                    name="estate_location_type"
                                                    value="{{$type->id}}">
                                             <label class="form-check-label" for="flexRadioDefault1">
@@ -173,7 +180,7 @@
                             </div>
                             <br>
 
-                            <div id="used_type">
+                            <div id="used_type" class="checkbox-group required">
                                 <hr>
                                 <label>
                                     نوع کاربری:
@@ -189,15 +196,15 @@
                                 @endforeach
                             </div>
 
-                            <div id="vila_option" class=" justify-content-around">
+                            <div id="vila_option" class=" justify-content-around checkbox-group required">
 
                                 <hr>
                                 <label>
                                     نوع ویلا:
                                 </label>
                                 @foreach(\App\Models\vila_options::all() as $option)
-                                    <div class="form-check ">
-                                        <input required class="form-check-input" name="vila_option[]" type="checkbox"
+                                    <div class="form-check checkbox-group required ">
+                                        <input class="form-check-input" name="vila_option[]" type="checkbox"
                                                value="{{$option->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$option->name}}
@@ -232,7 +239,7 @@
                                 <label class="form-check-label ">
                                     طبقه چندم:
                                 </label>
-                                <div  class="col-8">
+                                <div class="col-8">
                                     <input required type="number" name="floors" class="form-control">
                                 </div>
                             </div>
@@ -260,7 +267,7 @@
                                     مشاعات:
                                 </label>
                                 @foreach(\App\Models\Options::all() as $option)
-                                    <div class="form-check ">
+                                    <div class="form-check">
                                         <input class="form-check-input" name="option[]" type="checkbox"
                                                value="{{$option->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
@@ -269,9 +276,6 @@
                                     </div>
                                 @endforeach
                             </div>
-
-
-
 
 
                             <hr>
@@ -283,17 +287,18 @@
                                 <div class="col-8 ">
                                     <div class="input-group mb-3">
                                         <input required id="price_input" name="price" type="text" class="form-control"
-                                               aria-label="Recipient's username" aria-describedby="basic-addon2" onkeyup="javascript:this.value=separate(this.value);">
+                                               aria-label="Recipient's username" aria-describedby="basic-addon2"
+                                               onkeyup="javascript:this.value=separate(this.value);">
                                         <span class="input-group-text" id="basic-addon2">تومان</span>
                                     </div>
                                 </div>
-                                <div id="condition">
+                                <div id="condition" class="checkbox-group required">
                                     <label>
                                         شرایط قیمت:
                                     </label>
                                     @foreach(\App\Models\Conditions_type::all() as $Condition)
-                                        <div class="form-check ">
-                                            <input  class="form-check-input" name="condition[]" type="checkbox"
+                                        <div class="form-check">
+                                            <input class="form-check-input" name="condition[]" type="checkbox"
                                                    value="{{$Condition->id}}">
                                             <label class="form-check-label" for="flexCheckDefault">
                                                 {{$Condition->name}}
@@ -305,13 +310,13 @@
 
                             </div>
                             <br>
-                            <div id="documents">
+                            <div id="documents" class="checkbox-group required">
                                 <label>
                                     مدارک:
                                 </label>
                                 @foreach(\App\Models\document::all() as $document)
                                     <div class="form-check ">
-                                        <input  class="form-check-input" name="document[]" type="checkbox"
+                                        <input class="form-check-input" name="document[]" type="checkbox"
                                                value="{{$document->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$document->name}}
@@ -365,8 +370,10 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3 ">
-                                        <input id="input-b3" name="image[]" type="file" class="file" multiple accept="image/jpeg"
-                                                data-show-upload="false" data-show-caption="true" data-msg-placeholder="Select {files} for upload...">
+                                        <input id="input-b3" name="image[]" type="file" class="file" multiple
+                                               accept="image/jpeg"
+                                               data-show-upload="false" data-show-caption="true"
+                                               data-msg-placeholder="Select {files} for upload...">
                                     </div>
                                 </div>
                                 <div id="divImageMediaPreview"></div>
@@ -551,7 +558,7 @@
 
                 hh.each(function (i, ob) {
 
-                        $(ob).attr('disabled', false)
+                    $(ob).attr('disabled', false)
 
                 })
             }
@@ -586,9 +593,7 @@
             }
 
 
-
-            function separate(Number)
-            {
+            function separate(Number) {
                 var ss = parseInt(Number.replaceAll(',', ''));
                 if (isNaN(ss)) {
                     return '';
@@ -598,11 +603,63 @@
                 return ss.toLocaleString();
             }
 
-            function DoSubmit(){
-                var price=$("#price_input").val();
-                $("#price_input").val(price.replaceAll(',',''));
+            function DoSubmit() {
+                var price = $("#price_input").val();
+                $("#price_input").val(price.replaceAll(',', ''));
 
             }
+
+            $("#amlak").on('submit', function (e) {
+                var documents = $('#documents :checkbox:checked').length > 0;
+                var condition = $('#condition :checkbox:checked').length > 0;
+                var vila_option = $('#vila_option :checkbox:checked').length > 0;
+                var used_type = $('#used_type :checkbox:checked').length > 0;
+                var estate_type = $('input[name=estate_type]:checked').val();
+                console.log(estate_type);
+
+                if (!documents) {
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $("#documents").offset().top,
+
+                    }, 100);
+                    alert("حداقل یکی از موارد مدارک را انتخاب کنید");
+                    return false;
+                }
+                if (!condition) {
+                    $([document.documentElement, document.body]).animate({
+                        scrollTop: $("#condition").offset().top
+                    }, 100);
+                    alert("حداقل یکی از موارد  شرایط فروش را انتخاب کنید");
+
+                    return false;
+
+                }
+                if (estate_type == 2) {
+                    if (!used_type) {
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $("#used_type").offset().top
+                        }, 100);
+                        alert("حداقل یکی از موارد نوع کاربری را انتخاب کنید");
+
+                        return false;
+
+                    }
+                }
+                if (estate_type == 3) {
+                    if (!vila_option) {
+                        $([document.documentElement, document.body]).animate({
+                            scrollTop: $("#vila_option").offset().top
+                        }, 100);
+                        alert("حداقل یکی از موارد ویلا را انتخاب کنید");
+
+                        return false;
+
+                    }
+                }
+
+                return true
+            });
+
         </script>
 @endsection
 
