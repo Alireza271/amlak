@@ -9,7 +9,7 @@
             <div class="card-body">
 
 
-                @if($user->is_circulation)
+                @if($user->is_circulation || $user->is_admin )
                     <div class="">
                         <label> املاک </label>
                         <div class="row  m-2 justify-content-around p-3">
