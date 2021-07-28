@@ -13,6 +13,7 @@ use Illuminate\Support\Facades\Validator;
 use Intervention\Image\Facades\Image;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
+use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
 class AttractController extends Controller
@@ -51,10 +52,16 @@ class AttractController extends Controller
 
     }
 
-    public function posters()
+    public function posters($user_id=null)
     {
         if (Auth::user()->is_admin){
-            $posters=Poster::query()->paginate(10);
+            if ($user_id==null)
+            {
+
+                $posters=Poster::query()->paginate(10);
+            }else{
+                $posters=Poster::query()->where('user_id',$user_id)->paginate(10);
+            }
 
         }else{
             $posters=Auth::user()->posters()->paginate(10);

@@ -67,7 +67,7 @@ Route::prefix("attract")->middleware("attract")->group(function () {
     Route::get('/form_2', [App\Http\Controllers\AttractController::class, 'form_2_page'])->name('form_2_page');
     Route::post('/poster_form', [App\Http\Controllers\AttractController::class, 'poster_form'])->name('poster_form');
     Route::post('/form_2', [App\Http\Controllers\AttractController::class, 'form_2'])->name('form_2');
-    Route::get('/posters', [App\Http\Controllers\AttractController::class, 'posters'])->name('posters');
+    Route::get('/posters/{user_id?}', [App\Http\Controllers\AttractController::class, 'posters'])->name('posters');
     Route::get('/get_poster/{id}', [App\Http\Controllers\AttractController::class, 'get_poster'])->name('get_poster');
     Route::get('/update_poster/{id}', [App\Http\Controllers\AttractController::class, 'update_poster_page'])->name('update_poster_page');
     Route::post('/update_poster', [App\Http\Controllers\AttractController::class, 'update_poster'])->name('update_poster');
