@@ -66,6 +66,7 @@
                               enctype="multipart/form-data">
                             {{csrf_field()}}
                             <div class=" ">
+                                <span style="color: red">*</span>
 
 
                                 @foreach(\App\Models\estate_type::all() as $type)
@@ -81,8 +82,11 @@
 
 
                                 <div id="building_type" class=" ">
+
                                     <br>
-                                    @foreach(\App\Models\building_type::all() as $type)
+                                    <span style="color: red">*</span>
+
+                                @foreach(\App\Models\building_type::all() as $type)
 
                                         <div class="form-check-inline">
                                             <input class="form-check-input" required type="radio" name="building_type"
@@ -97,6 +101,7 @@
 
                                 <div id="estate_location_type">
                                     <br>
+                                    <span style="color: red">*</span>
 
                                     @foreach(\App\Models\Estate_Location_type::all() as $type)
 
@@ -117,6 +122,8 @@
                                 <div id="city" class=" row ">
 
                                     <label class="form-check-label ">
+                                        <span style="color: red">*</span>
+
                                         شهر:
                                     </label>
                                     <select id="city_dropdown" name="city" class="form-select col-4" required>
@@ -126,6 +133,8 @@
                                             <option value="{{$city->id}}">{{$city->name}}</option>
                                         @endforeach
                                     </select> <label class="form-check-label ">
+                                        <span style="color: red">*</span>
+
                                         منطقه:
                                     </label>
                                     <select id="location_dropdown" name="location" class="form-select col-4" required
@@ -140,6 +149,8 @@
                             <div id="owner_name" class=" row ">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     نام مالک:
                                 </label>
                                 <div class="col-8">
@@ -150,6 +161,8 @@
                             <div id="owner_phone" class=" row ">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     شماره مالک:
                                 </label>
                                 <div class="col-8">
@@ -161,16 +174,20 @@
                             <div class=" row " id="area">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     متراژ زمین:
                                 </label>
                                 <div class="col-8">
-                                    <input required type="number" name="area" class="form-control">
+                                    <input  type="number" name="area" class="form-control "required>
                                 </div>
                             </div>
                             <br>
                             <div class=" row " id="building_area">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     متراژ بنا:
                                 </label>
                                 <div class="col-8">
@@ -216,6 +233,8 @@
                             <div class="" id="floors_count">
                                 <hr>
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     تعداد طبقات:
                                 </label>
                                 <div class="col-8">
@@ -226,6 +245,8 @@
                             <div class="" id="module">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     واحد:
                                 </label>
                                 <div class="col-8">
@@ -237,6 +258,8 @@
                             <div class="" id="floors">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     طبقه چندم:
                                 </label>
                                 <div class="col-8">
@@ -249,11 +272,15 @@
 
 
                                 <div class="row"><label class=" ">
+                                        <span style="color: red">*</span>
+
                                         طول:
                                     </label>
                                     <input required type="number" name="length" class="form-control">
                                 </div>
                                 <div class="row"><label class="form-check-label ">
+                                        <span style="color: red">*</span>
+
                                         عرض:
                                     </label>
                                     <input required type="number" name="width" class="form-control" id="width">
@@ -282,6 +309,8 @@
                             <div id="price" class="row">
 
                                 <label class="form-check-label ">
+                                    <span style="color: red">*</span>
+
                                     قیمت:
                                 </label>
                                 <div class="col-8 ">
@@ -295,6 +324,8 @@
                                 <div id="condition" class="checkbox-group required">
                                     <label>
                                         شرایط قیمت:
+                                        <span style="color: red">*</span>
+
                                     </label>
                                     @foreach(\App\Models\Conditions_type::all() as $Condition)
                                         <div class="form-check">
@@ -312,6 +343,8 @@
                             <br>
                             <div id="documents" class="checkbox-group required">
                                 <label>
+                                    <span style="color: red">*</span>
+
                                     مدارک:
                                 </label>
                                 @foreach(\App\Models\document::all() as $document)
