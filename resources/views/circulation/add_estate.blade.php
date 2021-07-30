@@ -205,7 +205,7 @@
                                 </label>
                                 @foreach(\App\Models\Used_type::all() as $Used_type)
                                     <div class="form-check ">
-                                        <input required class="form-check-input" name="used_type[]" type="checkbox"
+                                        <input  class="form-check-input" name="used_type[]" type="checkbox"
                                                value="{{$Used_type->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$Used_type->name}}
