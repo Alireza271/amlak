@@ -17,6 +17,7 @@
 
 <!-- the jQuery Library -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+<script src="https://shpour.ir/js/ImageTools.es6" type="text/javascript"></script>
 
 <!-- piexif.min.js is needed for auto orienting image files OR when restoring exif data in resized images and when you
     wish to resize images before upload. This must be loaded before fileinput.min.js -->
@@ -86,7 +87,7 @@
                                     <br>
                                     <span style="color: red">*</span>
 
-                                @foreach(\App\Models\building_type::all() as $type)
+                                    @foreach(\App\Models\building_type::all() as $type)
 
                                         <div class="form-check-inline">
                                             <input class="form-check-input" required type="radio" name="building_type"
@@ -179,7 +180,7 @@
                                     متراژ زمین:
                                 </label>
                                 <div class="col-8">
-                                    <input  type="number" name="area" class="form-control "required>
+                                    <input type="number" name="area" class="form-control " required>
                                 </div>
                             </div>
                             <br>
@@ -395,6 +396,8 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <img id="preview" class=" "/>
 
                             <div id="images" class=" ">
 
@@ -639,7 +642,7 @@
             function DoSubmit() {
                 var price = $("#price_input").val();
                 $("#price_input").val(price.replaceAll(',', ''));
-
+                $('#input-b3').reset();
             }
 
             $("#amlak").on('submit', function (e) {
@@ -692,7 +695,52 @@
 
                 return true
             });
+            var jj;
+            document.getElementById('input-b3').onchange = function (evt) {
+                var files = $("#input-b3").prop('files');
+                for (var i = 0; i < files.length; i++) {
+                    console.log("dd");
+                    var file = files[i];
+                    ImageTools.resize(file, {
+                        width: 320, // maximum width
+                        height: 240 // maximum height
+                    }, function (blob, didItResize) {
+                        var reader = new FileReader();
+                        reader.readAsDataURL(blob);
 
+                        reader.onloadend = function () {
+                            var base64data = reader.result;
+                            $('#amlak').append("<input type='hidden' name='images[]' value='"+base64data+"'>");
+
+                        }
+                        // $('#amlak').append("<img src='"+window.URL.createObjectURL(blob)+"'>");
+                        // didItResize will be true if it managed to resize it, otherwise false (and will return the original file as 'blob')
+                        // $("#input-b3").prop('files',reader.result);
+
+                        // you can also now upload this blob using an XHR.
+                    });
+
+                }
+                console.log(jj)
+                // $("#input-b3").prop('files').each(function (file){
+                //     console.log(file.name);
+                //
+                // });
+                // $("#input-b3").prop('files').forEach( (file)=>{
+                //     console.log(file.name)
+                // });
+
+                //
+                //     ImageTools.resize(file, {
+                //         width: 320, // maximum width
+                //         height: 240 // maximum height
+                //     }, function (blob, didItResize) {
+                //         // didItResize will be true if it managed to resize it, otherwise false (and will return the original file as 'blob')
+                //         document.getElementById('preview').src = window.URL.createObjectURL(blob);
+                //         // you can also now upload this blob using an XHR.
+                //     });
+
+            }
         </script>
 @endsection
 

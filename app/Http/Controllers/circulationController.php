@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\estate;
 use Carbon\Carbon;
+use Carbon\Traits\Timestamp;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Facades\Image;
 use Morilog\Jalali\CalendarUtils;
@@ -27,6 +29,7 @@ class circulationController extends Controller
 
     public function add_estate(Request $request)
     {
+
 
         $estate = estate::create([
             "estate_type_id" => $request->get('estate_type'),
@@ -59,25 +62,42 @@ class circulationController extends Controller
         $i = true;
         $estate->thumbnail = "defult.png";
         $estate->save();
-        if ($request->has("image")) {
 
+        if ($request->has("images")) {
+            function base64_to_jpeg($base64_string, $output_file ) {
+                // open the output file for writing
+                $ifp = fopen( $output_file, 'wb' );
 
-            foreach ($request->file('image') as $file) {
+                // split the string on commas
+                // $data[ 0 ] == "data:image/png;base64"
+                // $data[ 1 ] == <actual base64 string>
+                $data = explode( ',', $base64_string );
 
-                $fileName = time() . '.' . $file->getClientOriginalName();
+                // we could add validation here with ensuring count( $data ) > 1
+                fwrite( $ifp, base64_decode( $data[ 1 ] ) );
 
+                // clean up the file resource
+                fclose( $ifp );
+                return $output_file;
+            }
+
+            foreach ($request->get('images') as $file) {
+
+                $fileName = "images/".date_timestamp_get(Date::now()).rand(0,10000).".jpg";
+                $img = Image::make(base64_to_jpeg($file,$fileName));
                 if ($i) {
-                    $img = Image::make($file->getRealPath())->resize(100, 100);
-                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
+                    $img->resize(100, 100);
+//                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
+                    $img->save('/home1/shpourir/public_html/images/thumbnails/' .$img->basename, 80);
 
-                    $estate->thumbnail = $fileName;
+                    $estate->thumbnail = $img->basename;
                     $estate->save();
                     $i = false;
                 }
-                $file->move('/home1/shpourir/public_html/images/', $fileName);
+//                $file->move('/home1/shpourir/public_html/images/', $fileName);
 
                 $estate->fresh()->images()->create([
-                        'file_name' => $fileName,
+                        'file_name' => $img->basename,
                     ]
                 );
             }
