@@ -642,7 +642,7 @@
             function DoSubmit() {
                 var price = $("#price_input").val();
                 $("#price_input").val(price.replaceAll(',', ''));
-                // $('#input-b3').val('');
+                $('#input-b3').val('');
             }
 
             $("#amlak").on('submit', function (e) {
