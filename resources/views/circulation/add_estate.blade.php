@@ -704,26 +704,29 @@
                     img.src = URL.createObjectURL(file);
 
 
-                    img.onload = function (dd) {
-                        var resulution;
-                        if (img.width > img.height) {
-                            resulution = {
-                                width: 1920, // maximum width
-                                height: 1080 // maximum height
-                            };
-                        } else {
-                            resulution = {
-                                width: 1080, // maximum width
-                                height: 1920 // maximum height
-                            };
-                        }
-                        ImageTools.resize(file, resulution, function (blob, didItResize) {
+                    // img.onload = function (dd) {
+                    //     var resulution;
+                    //     if (img.width > img.height) {
+                    //         resulution = {
+                    //             width: 1920, // maximum width
+                    //             height: 1080 // maximum height
+                    //         };
+                    //     } else {
+                    //         resulution = {
+                    //             width: 1080, // maximum width
+                    //             height: 1920 // maximum height
+                    //         };
+                    //     }
+                        ImageTools.resize(file,  {
+                            width: 1920, // maximum width
+                            height: 1080 // maximum height
+                        }, function (blob, didItResize) {
                             var reader = new FileReader();
                             reader.readAsDataURL(blob);
 
                             reader.onloadend = function () {
                                 var base64data = reader.result;
-                                $('#amlak').append("<input type='hidden' name='images[]' value='" + base64data + "'>");
+                                $('#amlak').append("<input class='hidden-image' type='hidden' name='images[]' value='" + base64data + "'>");
 
                             }
                             // $('#amlak').append("<img src='"+window.URL.createObjectURL(blob)+"'>");
@@ -732,7 +735,7 @@
 
                             // you can also now upload this blob using an XHR.
                         });
-                    };
+                    }
 
 
                 }
@@ -754,7 +757,11 @@
                 //         // you can also now upload this blob using an XHR.
                 //     });
 
-            }
+
+            $(document).on('click', '.btn-close', function(){
+                $('.hidden-image').remove();
+            });
+
         </script>
 @endsection
 

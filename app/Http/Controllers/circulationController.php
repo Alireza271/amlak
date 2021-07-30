@@ -81,25 +81,28 @@ class circulationController extends Controller
             }
 
             foreach ($request->get('images') as $file) {
-
+//
                 $fileName = "images/".date_timestamp_get(Date::now()).rand(0,10000).".jpg";
+                echo $file ;
+                echo "<br>";
                 $img = Image::make(base64_to_jpeg($file,$fileName));
-                if ($i) {
-                    $img->resize(100, 100);
-//                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
-                    $img->save('/home1/shpourir/public_html/images/thumbnails/' .$img->basename, 80);
-
-                    $estate->thumbnail = $img->basename;
-                    $estate->save();
-                    $i = false;
-                }
-//                $file->move('/home1/shpourir/public_html/images/', $fileName);
-
-                $estate->fresh()->images()->create([
-                        'file_name' => $img->basename,
-                    ]
-                );
+//                if ($i) {
+//                    $img->resize(100, 100);
+////                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
+//                    $img->save('/home1/shpourir/public_html/images/thumbnails/' .$img->basename, 80);
+//
+//                    $estate->thumbnail = $img->basename;
+//                    $estate->save();
+//                    $i = false;
+//                }
+////                $file->move('/home1/shpourir/public_html/images/', $fileName);
+//
+//                $estate->fresh()->images()->create([
+//                        'file_name' => $img->basename,
+//                    ]
+//                );
             }
+            return ;
 
         }
 
