@@ -599,34 +599,34 @@
                 })
             }
 
-            $("#image_upload").change(function () {
-                if (typeof (FileReader) != "undefined") {
-                    var dvPreview = $("#divImageMediaPreview");
-                    dvPreview.html("");
-                    var i = 0;
-                    $($(this)[0].files).each(function () {
-                        i++;
-                        var idd = "img" + i.toString();
-                        var file = $(this);
-                        var reader = new FileReader();
-                        reader.onload = function (e) {
-                            var img = $("<img id='" + idd + "' onclick='closee(" + idd + ");' />");
-                            img.attr("style", "width: 150px; height:100px; padding: 10px");
-                            img.attr("src", e.target.result);
-                            dvPreview.append(img);
+            // $("#image_upload").change(function () {
+            //     if (typeof (FileReader) != "undefined") {
+            //         var dvPreview = $("#divImageMediaPreview");
+            //         dvPreview.html("");
+            //         var i = 0;
+            //         $($(this)[0].files).each(function () {
+            //             i++;
+            //             var idd = "img" + i.toString();
+            //             var file = $(this);
+            //             var reader = new FileReader();
+            //             reader.onload = function (e) {
+            //                 var img = $("<img id='" + idd + "' onclick='closee(" + idd + ");' />");
+            //                 img.attr("style", "width: 150px; height:100px; padding: 10px");
+            //                 img.attr("src", e.target.result);
+            //                 dvPreview.append(img);
+            //
+            //             }
+            //             reader.readAsDataURL(file[0]);
+            //         });
+            //     } else {
+            //         alert("This browser does not support HTML5 FileReader.");
+            //     }
+            // });
 
-                        }
-                        reader.readAsDataURL(file[0]);
-                    });
-                } else {
-                    alert("This browser does not support HTML5 FileReader.");
-                }
-            });
-
-            function closee(id) {
-                $("#" + id.id).attr("hidden", true);
-                console.log($("#image_upload").val());
-            }
+            // function closee(id) {
+            //     $("#" + id.id).attr("hidden", true);
+            //     console.log($("#image_upload").val());
+            // }
 
 
             function separate(Number) {
@@ -642,7 +642,7 @@
             function DoSubmit() {
                 var price = $("#price_input").val();
                 $("#price_input").val(price.replaceAll(',', ''));
-                $('#input-b3').val('');
+                // $('#input-b3').val('');
             }
 
             $("#amlak").on('submit', function (e) {

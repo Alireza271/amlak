@@ -30,7 +30,6 @@ class circulationController extends Controller
     public function add_estate(Request $request)
     {
 
-
         $estate = estate::create([
             "estate_type_id" => $request->get('estate_type'),
             "estate_location_type_id" => $request->get('estate_location_type'),
