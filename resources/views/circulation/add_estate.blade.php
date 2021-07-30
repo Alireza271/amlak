@@ -205,7 +205,7 @@
                                 </label>
                                 @foreach(\App\Models\Used_type::all() as $Used_type)
                                     <div class="form-check ">
-                                        <input  class="form-check-input" name="used_type[]" type="checkbox"
+                                        <input class="form-check-input" name="used_type[]" type="checkbox"
                                                value="{{$Used_type->id}}">
                                         <label class="form-check-label" for="flexCheckDefault">
                                             {{$Used_type->name}}
@@ -406,7 +406,7 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3 ">
-                                            <input id="input-b3" name="image[]" type="file" class="file" multiple
+                                        <input id="input-b3" name="image[]" type="file" class="file" multiple
                                                accept="image/jpeg"
                                                data-show-upload="false" data-show-caption="true"
                                                data-msg-placeholder="Select {files} for upload...">
@@ -699,29 +699,43 @@
             document.getElementById('input-b3').onchange = function (evt) {
                 var files = $("#input-b3").prop('files');
                 for (var i = 0; i < files.length; i++) {
-                    console.log("dd");
                     var file = files[i];
-                    ImageTools.resize(file, {
-                        width: 320, // maximum width
-                        height: 240 // maximum height
-                    }, function (blob, didItResize) {
-                        var reader = new FileReader();
-                        reader.readAsDataURL(blob);
+                    const img = new Image();
+                    img.src = URL.createObjectURL(file);
 
-                        reader.onloadend = function () {
-                            var base64data = reader.result;
-                            $('#amlak').append("<input type='hidden' name='images[]' value='"+base64data+"'>");
 
+                    img.onload = function (dd) {
+                        var resulution;
+                        if (img.width > img.height) {
+                            resulution = {
+                                width: 1920, // maximum width
+                                height: 1080 // maximum height
+                            };
+                        } else {
+                            resulution = {
+                                width: 1080, // maximum width
+                                height: 1920 // maximum height
+                            };
                         }
-                        // $('#amlak').append("<img src='"+window.URL.createObjectURL(blob)+"'>");
-                        // didItResize will be true if it managed to resize it, otherwise false (and will return the original file as 'blob')
-                        // $("#input-b3").prop('files',reader.result);
+                        ImageTools.resize(file, resulution, function (blob, didItResize) {
+                            var reader = new FileReader();
+                            reader.readAsDataURL(blob);
 
-                        // you can also now upload this blob using an XHR.
-                    });
+                            reader.onloadend = function () {
+                                var base64data = reader.result;
+                                $('#amlak').append("<input type='hidden' name='images[]' value='" + base64data + "'>");
+
+                            }
+                            // $('#amlak').append("<img src='"+window.URL.createObjectURL(blob)+"'>");
+                            // didItResize will be true if it managed to resize it, otherwise false (and will return the original file as 'blob')
+                            // $("#input-b3").prop('files',reader.result);
+
+                            // you can also now upload this blob using an XHR.
+                        });
+                    };
+
 
                 }
-                console.log(jj)
                 // $("#input-b3").prop('files').each(function (file){
                 //     console.log(file.name);
                 //
