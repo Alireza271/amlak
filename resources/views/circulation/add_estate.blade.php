@@ -406,7 +406,7 @@
                                 </label>
                                 <div class="col-8 ">
                                     <div class="input-group mb-3 ">
-                                        <input id="input-b3" name="image[]" type="file" class="file" multiple
+                                            <input id="input-b3" name="image[]" type="file" class="file" multiple
                                                accept="image/jpeg"
                                                data-show-upload="false" data-show-caption="true"
                                                data-msg-placeholder="Select {files} for upload...">
@@ -642,7 +642,7 @@
             function DoSubmit() {
                 var price = $("#price_input").val();
                 $("#price_input").val(price.replaceAll(',', ''));
-                $('#input-b3').reset();
+                $('#input-b3').val('');
             }
 
             $("#amlak").on('submit', function (e) {
