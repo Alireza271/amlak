@@ -277,14 +277,14 @@
 
                                         طول:
                                     </label>
-                                    <input required type="number" name="length" class="form-control">
+                                    <input  type="number" name="length" class="form-control">
                                 </div>
                                 <div class="row"><label class="form-check-label ">
                                         <span style="color: red">*</span>
 
                                         عرض:
                                     </label>
-                                    <input required type="number" name="width" class="form-control" id="width">
+                                    <input  type="number" name="width" class="form-control" id="width">
                                 </div>
                             </div>
 
