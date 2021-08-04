@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\estate;
 use Carbon\Carbon;
 use Carbon\Traits\Timestamp;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
@@ -12,6 +13,7 @@ use Illuminate\Support\Facades\Redirect;
 use Intervention\Image\Facades\Image;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
+use mysql_xdevapi\Exception;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
@@ -63,32 +65,33 @@ class circulationController extends Controller
         $estate->save();
 
         if ($request->has("images")) {
-            function base64_to_jpeg($base64_string, $output_file ) {
+            function base64_to_jpeg($base64_string, $output_file)
+            {
                 // open the output file for writing
-                $ifp = fopen( $output_file, 'wb' );
+                $ifp = fopen($output_file, 'wb');
 
                 // split the string on commas
                 // $data[ 0 ] == "data:image/png;base64"
                 // $data[ 1 ] == <actual base64 string>
-                $data = explode( ',', $base64_string );
+                $data = explode(',', $base64_string);
 
                 // we could add validation here with ensuring count( $data ) > 1
-                fwrite( $ifp, base64_decode( $data[ 1 ] ) );
+                fwrite($ifp, base64_decode($data[1]));
 
                 // clean up the file resource
-                fclose( $ifp );
+                fclose($ifp);
                 return $output_file;
             }
 
             foreach ($request->get('images') as $file) {
 //
-                $fileName = "images/".date_timestamp_get(Date::now()).rand(0,10000).".jpg";
+                $fileName = "images/" . date_timestamp_get(Date::now()) . rand(0, 10000) . ".jpg";
 
-                $img = Image::make(base64_to_jpeg($file,$fileName));
+                $img = Image::make(base64_to_jpeg($file, $fileName));
                 if ($i) {
                     $img->resize(100, 100);
 //                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
-                    $img->save('/home1/shpourir/public_html/images/thumbnails/' .$img->basename, 80);
+                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $img->basename, 80);
 
                     $estate->thumbnail = $img->basename;
                     $estate->save();
@@ -185,6 +188,50 @@ class circulationController extends Controller
         }
         $params['edited'] = 'ok';
         return redirect($url['path'] . "?" . http_build_query($params));
+    }
+
+    public function delete_estate(Request $request)
+    {
+        if (auth()->user()->is_admin) {
+
+            $estate = estate::find($request->get('id'));
+            try {
+                $estate->conditions_type()->detach();
+            } catch (\Error $exception) {
+            }
+            try {
+                $estate->documents()->detach();
+            } catch (\Error $exception) {
+            }
+            try {
+                $estate->options()->detach();
+
+            } catch (\Error $exception) {
+
+            }
+            try {
+                $estate->vila_options()->detach();
+
+            } catch (\Error $exception) {
+
+            }
+            try {
+                $estate->images()->delete();
+
+            } catch (\Error $exception) {
+
+            }
+            try {
+                $estate->used_type()->detach();
+
+            } catch (\Error $exception) {
+
+            }
+             $estate->delete();
+           return \redirect(request()->headers->get('referer'));
+
+
+        }
     }
 
     public function get_estate($id)

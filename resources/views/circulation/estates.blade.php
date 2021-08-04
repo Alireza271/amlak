@@ -395,6 +395,11 @@
                                         <a href={{route('update_estate_page',['id'=>$estate->id])}} type="button"
                                            class="btn btn-outline-success btn-sm"> ویرایش</a>
                                     @endif
+
+                                    @if(auth()->user()->is_admin)
+                                        <a href={{route('delete_estate',['id'=>$estate->id])}} type="button"
+                                          id="delete_estate" class="btn btn-outline-danger btn-sm">حذف</a>
+                                    @endif
                                 </div>
 
                             </td>
@@ -569,5 +574,9 @@
             $("#max_price").val(max_price.replaceAll(',', ''));
             return true;
         }
+
+        $("#delete_estate").on('click',function (){
+          return  confirm("آیا مطمعن هستید؟")
+        });
     </script>
 @endsection
