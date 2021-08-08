@@ -125,7 +125,7 @@ class AttractController extends Controller
         if (Auth::user()->is_admin){
             $filter = Poster::query();
         }else{
-            $filter = Poster::query()->where('id',Auth::id());
+            $filter = Poster::query()->where('user_id',Auth::id());
         }
 
         if ($estate_type != null) {
