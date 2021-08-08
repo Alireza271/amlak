@@ -60,6 +60,7 @@
                                         </select>
                                     </div>
 
+                                    @if(Auth::user()->is_admin)
                                     <div id="user_id">
                                         <select id="social_dropdown" name="attract_id"
                                                 class="form-select col-4">
@@ -70,7 +71,7 @@
                                                         @endif value="{{$attract->id}}">{{$attract->name}}</option>                                            @endforeach
                                         </select>
                                     </div>
-
+                                    @endif
 
                                 </div>
                                 <div class="form-group row row-cols-sm-2 row-cols-lg-2 mb-2">

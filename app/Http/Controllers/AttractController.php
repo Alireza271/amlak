@@ -43,7 +43,7 @@ class AttractController extends Controller
         $poster->user_id = \auth()->id();
         $poster->save();
 
-        return redirect(route('posters',['status'=>'ok']));
+        return redirect(route('posters', ['status' => 'ok']));
     }
 
     public function form_2()
@@ -52,62 +52,61 @@ class AttractController extends Controller
 
     }
 
-    public function posters($user_id=null)
+    public function posters($user_id = null)
     {
-        if (Auth::user()->is_admin){
-            if ($user_id==null)
-            {
+        if (Auth::user()->is_admin) {
+            if ($user_id == null) {
 
-                $posters=Poster::query()->paginate(10);
-            }else{
-                $posters=Poster::query()->where('user_id',$user_id)->paginate(10);
+                $posters = Poster::query()->paginate(10);
+            } else {
+                $posters = Poster::query()->where('user_id', $user_id)->paginate(10);
             }
 
-        }else{
-            $posters=Auth::user()->posters()->paginate(10);
+        } else {
+            $posters = Auth::user()->posters()->paginate(10);
         }
-        return view('attract.posters',compact('posters'));
-
-    }
-    public function get_poster($id){
-        if (Auth::user()->is_admin){
-            $poster=Poster::find($id);
-        }
-        else{
-            $poster=Auth::user()->posters->find($id);
-
-        }
-        return view('attract.get_poster' ,compact('poster'));
+        return view('attract.posters', compact('posters'));
 
     }
 
-    public function update_poster_page($id){
+    public function get_poster($id)
+    {
+        if (Auth::user()->is_admin) {
+            $poster = Poster::find($id);
+        } else {
+            $poster = Auth::user()->posters->find($id);
 
-        if (Auth::user()->is_admin){
-            $poster=Poster::find($id);
         }
-        else{
-            $poster=Auth::user()->posters->find($id);
+        return view('attract.get_poster', compact('poster'));
+
+    }
+
+    public function update_poster_page($id)
+    {
+
+        if (Auth::user()->is_admin) {
+            $poster = Poster::find($id);
+        } else {
+            $poster = Auth::user()->posters->find($id);
 
         }
 
-        return view('attract.poster_form_update',compact('poster'));
+        return view('attract.poster_form_update', compact('poster'));
 
     }
 
     public function update_poster(Request $request)
     {
-        if (Auth::user()->is_admin){
+        if (Auth::user()->is_admin) {
             Poster::find($request->get('id'))->update($request->all());
-            $poster=Poster::find($request->get('id'));
+            $poster = Poster::find($request->get('id'));
 
-        }
-        else{
+        } else {
             Auth::user()->posters->find($request->get('id'))->update($request->all());
-            $poster=Auth::user()->posters->find($request->get('id'));
+            $poster = Auth::user()->posters->find($request->get('id'));
 
         }
-        return view('attract.poster_form_update',compact('poster'));
+        return view('attract.poster_form_update', compact('poster'));
 
     }
 
@@ -123,8 +122,11 @@ class AttractController extends Controller
         $attract = $request->get("attract_id");
         $estate_location_type_id = $request->get("estate_location_type_id");
 
-
-        $filter = Poster::query();
+        if (Auth::user()->is_admin){
+            $filter = Poster::query();
+        }else{
+            $filter = Poster::query()->where('id',Auth::id());
+        }
 
         if ($estate_type != null) {
             error_log('estate_type');
@@ -146,17 +148,17 @@ class AttractController extends Controller
         if ($social != null) {
             error_log('social_id');
 
-            $filter = $filter->where('social_id',$social);
+            $filter = $filter->where('social_id', $social);
         }
         if ($attract != null) {
             error_log('attract');
 
-            $filter = $filter->where('user_id',$attract);
+            $filter = $filter->where('user_id', $attract);
         }
         if ($estate_location_type_id != null) {
             error_log('estate_location_type_id');
 
-            $filter = $filter->where('estate_location_type_id',$estate_location_type_id);
+            $filter = $filter->where('estate_location_type_id', $estate_location_type_id);
         }
 
         if ($from_date != null) {
@@ -165,7 +167,7 @@ class AttractController extends Controller
             $filter = $filter->whereBetween("created_at", [$from_date, $to_date]);
         }
 
-        $posters= $filter->paginate(10);
+        $posters = $filter->paginate(10);
         $posters->appends($request->all())->links();
 
 
