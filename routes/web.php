@@ -51,7 +51,7 @@ Route::prefix("circulation")->middleware("circulation")->group(function () {
     Route::get('estates', [App\Http\Controllers\circulationController::class, 'estates'])->name('estates');
     Route::get('update/{id}/', [App\Http\Controllers\circulationController::class, 'update_estate_page'])->name('update_estate_page');
     Route::post('update', [App\Http\Controllers\circulationController::class, 'update_estate'])->name('update_estate');
-    Route::get('delete', [App\Http\Controllers\circulationController::class, 'delete_estate'])->name('delete_estate');
+    Route::get('delete/{id}', [App\Http\Controllers\AdminController::class, 'delete_estate'])->name('delete_estate');
     Route::get('get/{id}', [App\Http\Controllers\circulationController::class, 'get_estate'])->name('get_estate');
     Route::get('search_estate', [App\Http\Controllers\circulationController::class, 'search_estate'])->name('search_estate');
     Route::get('all_estate', [App\Http\Controllers\circulationController::class, 'all_estates'])->name('all_estates');

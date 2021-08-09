@@ -190,49 +190,6 @@ class circulationController extends Controller
         return redirect($url['path'] . "?" . http_build_query($params));
     }
 
-    public function delete_estate(Request $request)
-    {
-        if (auth()->user()->is_admin) {
-
-            $estate = estate::find($request->get('id'));
-            try {
-                $estate->conditions_type()->detach();
-            } catch (\Error $exception) {
-            }
-            try {
-                $estate->documents()->detach();
-            } catch (\Error $exception) {
-            }
-            try {
-                $estate->options()->detach();
-
-            } catch (\Error $exception) {
-
-            }
-            try {
-                $estate->vila_options()->detach();
-
-            } catch (\Error $exception) {
-
-            }
-            try {
-                $estate->images()->delete();
-
-            } catch (\Error $exception) {
-
-            }
-            try {
-                $estate->used_type()->detach();
-
-            } catch (\Error $exception) {
-
-            }
-             $estate->delete();
-           return \redirect(request()->headers->get('referer'));
-
-
-        }
-    }
 
     public function get_estate($id)
     {

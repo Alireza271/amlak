@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
+use PhpParser\Node\Stmt\Return_;
 
 class AdminController extends Controller
 {
@@ -60,9 +61,26 @@ class AdminController extends Controller
     public function delete_user($id)
     {
         $user = User::find($id);
+        if ($user->is_admin || $user->is_circulation){
+            $estates_ids=$user->estate->pluck('id');
+            foreach ($estates_ids as $estate_id){
+                $this->delete_estate($estate_id);
+            }
+            $customer_info_ids=$user->customersinfo->pluck('id');
+            foreach ($customer_info_ids as $id){
+                $this->delete_customer_info($id);
+            }
+
+        }else{
+            $posters_ids=$user->Posters->pluck('id');
+            foreach ($posters_ids as $id){
+                $this->delete_poster($id);
+            }
+
+        }
+
         $user->delete();
-        "سلام";
-        return redirect(route("users"));
+        return \redirect(request()->headers->get('referer'));
     }
 
     public function search_user(Request $request)
@@ -230,6 +248,63 @@ class AdminController extends Controller
 
         return view('admin.posters_report', ['posters' => $posters,'users'=>$users]);
     }
+    public function delete_estate($id)
+    {
+        if (auth()->user()->is_admin) {
 
+            $estate = estate::find($id);
+            try {
+                $estate->conditions_type()->detach();
+            } catch (\Error $exception) {
+            }
+            try {
+                $estate->documents()->detach();
+            } catch (\Error $exception) {
+            }
+            try {
+                $estate->options()->detach();
+
+            } catch (\Error $exception) {
+
+            }
+            try {
+                $estate->vila_options()->detach();
+
+            } catch (\Error $exception) {
+
+            }
+            try {
+                $estate->images()->delete();
+
+            } catch (\Error $exception) {
+
+            }
+            try {
+                $estate->used_type()->detach();
+
+            } catch (\Error $exception) {
+
+            }
+            $estate->delete();
+            return \redirect(request()->headers->get('referer'));
+
+
+        }
+    }
+
+    public function delete_customer_info($id){
+        $Costomer_info=CustomerInfo::find($id);
+        $Costomer_info->delete();
+        return \redirect(request()->headers->get('referer'));
+
+    }
+
+    public function delete_poster($id)
+    {
+        $poster=Poster::find($id);
+        $poster->delete();
+        return \redirect(request()->headers->get('referer'));
+
+    }
 
 }
