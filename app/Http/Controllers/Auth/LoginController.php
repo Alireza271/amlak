@@ -47,6 +47,25 @@ class LoginController extends Controller
         }
     }
 
+    public function showLoginForm()
+    {
+        if (Auth::check()){
+
+            if (Auth::user()->is_admin) {
+                return route("admin");
+            }
+
+            if (Auth::user()->is_attract) {
+                return route("attract");
+            }
+            if (Auth::user()->is_circulation) {
+                return route("circulation");
+            }
+        }
+        return view('auth.login');
+
+    }
+
     /**
      * Create a new controller instance.
      *

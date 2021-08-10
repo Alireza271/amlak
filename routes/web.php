@@ -15,8 +15,21 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
+    if (Auth::check()){
 
+        if (Auth::user()->is_admin) {
+            return redirect(route("admin"));
+        }
+
+        if (Auth::user()->is_attract) {
+            return redirect(route("attract"));
+        }
+        if (Auth::user()->is_circulation) {
+            return redirect(route("circulation"));
+        }
+    }
     return view('auth.login');
+
 });
 
 Auth::routes();
@@ -71,6 +84,7 @@ Route::prefix("attract")->middleware("attract")->group(function () {
     Route::get('/posters/{user_id?}', [App\Http\Controllers\AttractController::class, 'posters'])->name('posters');
     Route::get('/get_poster/{id}', [App\Http\Controllers\AttractController::class, 'get_poster'])->name('get_poster');
     Route::get('/update_poster/{id}', [App\Http\Controllers\AttractController::class, 'update_poster_page'])->name('update_poster_page');
+    Route::get('/delete_poster/{id}', [App\Http\Controllers\AttractController::class, 'delete_poster'])->name('delete_poster');
     Route::post('/update_poster', [App\Http\Controllers\AttractController::class, 'update_poster'])->name('update_poster');
     Route::get('/search_posters', [App\Http\Controllers\AttractController::class, 'search_posters'])->name('search_posters');
 

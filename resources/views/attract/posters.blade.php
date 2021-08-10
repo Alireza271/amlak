@@ -61,16 +61,16 @@
                                     </div>
 
                                     @if(Auth::user()->is_admin)
-                                    <div id="user_id">
-                                        <select id="social_dropdown" name="attract_id"
-                                                class="form-select col-4">
-                                            <option value="">انتخاب کاربر</option>
+                                        <div id="user_id">
+                                            <select id="social_dropdown" name="attract_id"
+                                                    class="form-select col-4">
+                                                <option value="">انتخاب کاربر</option>
 
-                                            @foreach(\App\Models\User::where('is_attract',1)->get() as $attract)
-                                                <option @if(request("attract_id")==$attract->id) selected
-                                                        @endif value="{{$attract->id}}">{{$attract->name}}</option>                                            @endforeach
-                                        </select>
-                                    </div>
+                                                @foreach(\App\Models\User::where('is_attract',1)->get() as $attract)
+                                                    <option @if(request("attract_id")==$attract->id) selected
+                                                            @endif value="{{$attract->id}}">{{$attract->name}}</option>                                            @endforeach
+                                            </select>
+                                        </div>
                                     @endif
 
                                 </div>
@@ -167,6 +167,12 @@
                                                class="btn btn-primary">مشاهده</a>
                                             <a href="{{route('update_poster_page',['id'=>$poster->id])}}" id="edit"
                                                type="button" class="btn btn-warning">ویرایش</a>
+
+                                            @if(auth()->user()->is_admin)
+                                                <a href="{{route('delete_poster',['id'=>$poster->id])}}"
+                                                   id="delete_poster"
+                                                   type="button" class="btn btn-danger">حذف</a>
+                                            @endif
                                         </td>
                                     </tr>
                                 @endforeach
@@ -212,6 +218,10 @@
             $("#max_price").val(price.replaceAll(',', ''));
 
         }
+
+        $("#delete_poster").on('click', function () {
+            return confirm("آیا مطمعن هستید؟")
+        });
     </script>
 
 @endsection

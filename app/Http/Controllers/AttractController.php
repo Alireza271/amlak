@@ -175,4 +175,11 @@ class AttractController extends Controller
 
     }
 
+    public function delete_poster($id)
+    {
+        $poster=Poster::find($id);
+        $poster->delete();
+        return \redirect(request()->headers->get('referer'));
+    }
+
 }
