@@ -6,8 +6,10 @@ use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Concerns\FromCollection;
 
-class User extends Authenticatable
+class User extends Authenticatable implements FromCollection
 {
     use HasFactory, Notifiable;
 
@@ -58,4 +60,8 @@ class User extends Authenticatable
         return $this->hasMany(CustomerInfo::class);
     }
 
+    public function collection()
+    {
+       return User::all();
+    }
 }

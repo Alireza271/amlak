@@ -1,7 +1,12 @@
 <?php
 
+use App\Exports\UsersExport;
+use App\Models\estate;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Maatwebsite\Excel\Facades\Excel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,8 +18,11 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::get('test',function (){
 
+});
 Route::get('/', function () {
+//
     if (Auth::check()){
 
         if (Auth::user()->is_admin) {
@@ -72,6 +80,7 @@ Route::prefix("circulation")->middleware("circulation")->group(function () {
     Route::get('week/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_week'])->name('estates_of_week');
     Route::get('month/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_month'])->name('estates_of_month');
     Route::get('year/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_year'])->name('estates_of_year');
+    Route::get('download/', [App\Http\Controllers\circulationController::class, 'create_excel'])->name('create_excel');
 });
 
 

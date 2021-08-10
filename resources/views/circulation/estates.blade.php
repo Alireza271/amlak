@@ -304,12 +304,15 @@
                         </label>
                         <label>
                             {{$estates->total()}}                            </label>
+
                     </div>
+
 
                 </form>
             </div>
 
             <div class="card-body">
+
                 @if (session('status'))
                     <div class="alert alert-success" role="alert">
                         {{ session('status') }}
@@ -410,7 +413,10 @@
                     </tbody>
                 </table>
                     </div>
-
+                    <br>
+                    <div>
+                        <a href="{{route('create_excel')}}" class="btn btn-primary"> خروجی اکسل</a>
+                    </div>
             </div>
             {{$estates->links()}}
             <div class="card-footer justify-content-evenly ">
@@ -574,7 +580,7 @@
             $("#max_price").val(max_price.replaceAll(',', ''));
             return true;
         }
-
+z
         $("#delete_estate").on('click',function (){
           return  confirm("آیا مطمعن هستید؟")
         });

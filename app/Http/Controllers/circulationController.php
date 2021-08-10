@@ -2,18 +2,26 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\UsersExport;
 use App\Models\estate;
+use App\Models\User;
 use Carbon\Carbon;
 use Carbon\Traits\Timestamp;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
+use Maatwebsite\Excel\Facades\Excel;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
 use mysql_xdevapi\Exception;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use function PHPUnit\Framework\isEmpty;
 use function PHPUnit\Framework\isNull;
 
@@ -116,6 +124,7 @@ class circulationController extends Controller
     {
         $estates = Auth::user()->estate()->orderBy('created_at', "DESC")->orderBy('created_at', "DESC")->Paginate(10);
         $custom_filter = [];
+    return Excel::download(new UsersExport($estates->all('phone')),'test.xlsx');
 
         return view('circulation.estates', compact("estates", "custom_filter"));
     }
@@ -428,25 +437,25 @@ class circulationController extends Controller
 
             }
         }
-
-
         $estates = $filter->orderBy('created_at', "DESC")->Paginate(10);
         $estates->appends($request->all())->links();
+        Session::put('Excel'.Auth::id(),$filter->get());
 //
 //
 ////        return Auth::user()->estate->whereBetween("created_at",[$from_date,$to_date]);
 //        $estates = $estates->get();
-        return view('circulation.estates', ['estates' => $estates, "custom_filter" => $custom_filter]);
+        return view('circulation.estates', ['estates' => $estates, "custom_filter" => $custom_filter,]);
+
 
     }
 
-    public
     function all_estates()
     {
         $estates = estate::orderBy('created_at', "DESC")->Paginate(10);
         $custom_filter = [
             "all_estate" => "1"
         ];
+        Session::put('Excel'.Auth::id(),estate::all());
 
         return view('circulation.estates', ["estates" => $estates, "custom_filter" => $custom_filter]);
 
@@ -528,5 +537,19 @@ class circulationController extends Controller
 
     }
 
+    public function create_excel(){
+        $estates= Session::get('Excel'.Auth::id());
+        $file_name=date_timestamp_get(Date::now()) . rand(0, 10000)."Excel.xlsx";
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $array=[];
+        foreach ($estates as $estate){
+            $array[]=[$estate->owner_name,$estate->owner_phone];
+        }
+        $sheet->fromArray($array);
+        $writer = new Xlsx($spreadsheet);
+        $writer->save($file_name);
+        return Response::download(public_path()."/".$file_name);
+    }
 
 }
