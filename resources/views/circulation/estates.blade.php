@@ -580,9 +580,9 @@
             $("#max_price").val(max_price.replaceAll(',', ''));
             return true;
         }
-z
+
         $("#delete_estate").on('click',function (){
-          return  confirm("آیا مطمعن هستید؟")
+          return confirm("آیا مطمعن هستید؟")
         });
     </script>
 @endsection
