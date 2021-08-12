@@ -64,4 +64,11 @@ class User extends Authenticatable implements FromCollection
     {
        return User::all();
     }
+
+
+    public function Poster_daily_report()
+    {
+        return $this->hasMany(Poster_Daily_Report::class);
+
+    }
 }

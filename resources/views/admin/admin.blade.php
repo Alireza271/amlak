@@ -122,6 +122,14 @@
                                 </a>
 
                             </div>
+                            <div class="list-group position-relative" id="list-tab" role="">
+
+
+                                <a class="list-group-item " id="list-settings-list"
+                                   href="{{route('poster_daily_report_page')}}" role="tab">لیست گزارش روزانه آگهی
+                                </a>
+
+                            </div>
                         </div>
 
 

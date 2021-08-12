@@ -7,6 +7,7 @@ use App\Models\estate;
 use App\Models\Estate_Images;
 use App\Models\Options;
 use App\Models\Poster;
+use App\Models\Poster_Daily_Report;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -32,7 +33,7 @@ class AttractController extends Controller
 
     public function form_2_page()
     {
-        return view('attract.form_2');
+        return view('attract.poster_daily_report_form.blade.php');
 
     }
 
@@ -48,7 +49,7 @@ class AttractController extends Controller
 
     public function form_2()
     {
-        return view('attract.form_2');
+        return view('attract.poster_daily_report_form.blade.php');
 
     }
 
@@ -122,10 +123,10 @@ class AttractController extends Controller
         $attract = $request->get("attract_id");
         $estate_location_type_id = $request->get("estate_location_type_id");
 
-        if (Auth::user()->is_admin){
+        if (Auth::user()->is_admin) {
             $filter = Poster::query();
-        }else{
-            $filter = Poster::query()->where('user_id',Auth::id());
+        } else {
+            $filter = Poster::query()->where('user_id', Auth::id());
         }
 
         if ($estate_type != null) {
@@ -177,9 +178,66 @@ class AttractController extends Controller
 
     public function delete_poster($id)
     {
-        $poster=Poster::find($id);
+        $poster = Poster::find($id);
         $poster->delete();
         return \redirect(request()->headers->get('referer'));
+    }
+
+    public function poster_daily_report_form(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            return view('attract.poster_daily_report_form');
+        }
+        $dateString = CalendarUtils::convertNumbers($request->get('date'), true);
+        $created_at = CalendarUtils::createCarbonFromFormat('Y/m/d', $dateString)->format('Y-m-d H:m:s');
+        Auth::user()->Poster_daily_report()->create($request->all())->update(['created_at' => $created_at]);
+        return view('attract.poster_daily_report_form', ['status' => "ok"]);
+
+    }
+
+    public function poster_daily_report_page(Request $request)
+    {
+        if ($request->isMethod('GET')) {
+            if (Auth::user()->is_admin) {
+                $poster_daily_reports = Poster_Daily_Report::query();
+            } else {
+                $poster_daily_reports = Auth::user()->Poster_daily_report();
+
+            }
+            if ($request->get('action') == 'جستجو') {
+                $from_date = $request->get("from_date");
+                $to_date = $request->get("to_date");
+
+                if ($from_date != null || $to_date != null) {
+                    $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("from_date") == null) ? Jalalian::forge("2020-01-01")->format('Y/m/d') : $request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
+                    $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
+                    $poster_daily_reports = $poster_daily_reports->whereBetween("created_at", [$from_date, $to_date]);
+                }
+
+            }
+            $poster_daily_reports = $poster_daily_reports->paginate(10);
+            $poster_daily_reports->appends($request->all())->links();
+
+            return view('attract.posters_daily_report', compact('poster_daily_reports'));
+
+        }
+        if ($request->get('action') == 'ویرایش') {
+            $dateString = CalendarUtils::convertNumbers($request->get('date'), true);
+            $created_at = CalendarUtils::createCarbonFromFormat('Y/m/d', $dateString)->format('Y-m-d H:m:s');
+            $poster = Poster_Daily_Report::find($request->get('id'));
+            $poster->update($request->all());
+            $poster->save();
+
+            $poster->update(['created_at' => $created_at]);
+            $poster->save();
+        } else {
+            $poster = Poster_Daily_Report::find($request->get('id'));
+            $poster->delete();
+        }
+
+
+        return redirect($request->headers->get('referer'));
+
     }
 
 }

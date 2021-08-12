@@ -96,6 +96,8 @@ Route::prefix("attract")->middleware("attract")->group(function () {
     Route::get('/delete_poster/{id}', [App\Http\Controllers\AttractController::class, 'delete_poster'])->name('delete_poster');
     Route::post('/update_poster', [App\Http\Controllers\AttractController::class, 'update_poster'])->name('update_poster');
     Route::get('/search_posters', [App\Http\Controllers\AttractController::class, 'search_posters'])->name('search_posters');
+    Route::any('/poster_daily_report_form', [App\Http\Controllers\AttractController::class, 'poster_daily_report_form'])->name('poster_daily_report_form');
+    Route::any('/poster_daily_report_page', [App\Http\Controllers\AttractController::class, 'poster_daily_report_page'])->name('poster_daily_report_page');
 
 });
 
