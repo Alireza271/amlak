@@ -2,6 +2,7 @@
 
 namespace App\Console;
 
+use Faker\Core\File;
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
 
@@ -24,6 +25,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
+        $schedule->call(function (){\Illuminate\Support\Facades\File::cleanDirectory(env('PUBLIC_PATCH', public_path()) . "/excel");
+        });
+
         // $schedule->command('inspire')->hourly();
     }
 

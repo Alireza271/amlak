@@ -80,7 +80,9 @@ Route::prefix("circulation")->middleware("circulation")->group(function () {
     Route::get('week/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_week'])->name('estates_of_week');
     Route::get('month/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_month'])->name('estates_of_month');
     Route::get('year/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_year'])->name('estates_of_year');
-    Route::get('download/', [App\Http\Controllers\circulationController::class, 'create_excel'])->name('create_excel');
+    Route::get('download/',function (){
+       return create_excel();
+    })->name('create_excel');
 });
 
 

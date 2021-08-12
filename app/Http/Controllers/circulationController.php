@@ -3,27 +3,23 @@
 namespace App\Http\Controllers;
 
 use App\Exports\UsersExport;
+use App\Helper\Helper;
 use App\Models\estate;
-use App\Models\User;
 use Carbon\Carbon;
-use Carbon\Traits\Timestamp;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
-use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Session;
 use Intervention\Image\Facades\Image;
 use Maatwebsite\Excel\Facades\Excel;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
-use mysql_xdevapi\Exception;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
+;
 
 class circulationController extends Controller
 {
@@ -124,7 +120,7 @@ class circulationController extends Controller
     {
         $estates = Auth::user()->estate()->orderBy('created_at', "DESC")->orderBy('created_at', "DESC")->Paginate(10);
         $custom_filter = [];
-    return Excel::download(new UsersExport($estates->all('phone')),'test.xlsx');
+        return Excel::download(new UsersExport($estates->all('phone')), 'test.xlsx');
 
         return view('circulation.estates', compact("estates", "custom_filter"));
     }
@@ -437,27 +433,22 @@ class circulationController extends Controller
 
             }
         }
-        $estates = $filter->orderBy('created_at', "DESC")->Paginate(10);
-        $estates->appends($request->all())->links();
-        Session::put('Excel'.Auth::id(),$filter->get());
-//
-//
-////        return Auth::user()->estate->whereBetween("created_at",[$from_date,$to_date]);
-//        $estates = $estates->get();
-        return view('circulation.estates', ['estates' => $estates, "custom_filter" => $custom_filter,]);
+
+
+        return $this->show_estates($filter, $custom_filter);
 
 
     }
 
     function all_estates()
     {
-        $estates = estate::orderBy('created_at', "DESC")->Paginate(10);
+        $estates = estate::query();
         $custom_filter = [
             "all_estate" => "1"
         ];
-        Session::put('Excel'.Auth::id(),estate::all());
 
-        return view('circulation.estates', ["estates" => $estates, "custom_filter" => $custom_filter]);
+
+        return $this->show_estates($estates, $custom_filter);
 
 
     }
@@ -466,35 +457,35 @@ class circulationController extends Controller
     {
 
         if ($id != null) {
-            $estate = estate::query()->where("user_id", $id)->where("created_at", ">=", Carbon::today())->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where("created_at", ">=", Carbon::today());
             $custom_filter['selected_user'] = $id;
         } elseif (Auth::user()->is_admin) {
 
-            $estate = estate::query()->where("created_at", ">=", Carbon::today())->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where("created_at", ">=", Carbon::today());
             $custom_filter ['all_estate'] = 1;
         } else {
-            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::today())->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::today());
         }
         $custom_filter ['date_range'] = Carbon::today();
-        return view('circulation.estates', ['estates' => $estate, "custom_filter" => $custom_filter]);
+        return $this->show_estates($estate, $custom_filter);
     }
 
     public function estates_of_week($id = null)
     {
         if ($id != null) {
 
-            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7));
             $custom_filter['selected_user'] = $id;
         } elseif (Auth::user()->is_admin) {
-            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(7));
             $custom_filter ['all_estate'] = 1;
 
         } else {
-            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(7))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(7));
 
         }
         $custom_filter ['date_range'] = Carbon::now()->subDay(7);
-        return view('circulation.estates', ['estates' => $estate, "custom_filter" => $custom_filter]);
+        return $this->show_estates($estate, $custom_filter);
 
     }
 
@@ -502,18 +493,18 @@ class circulationController extends Controller
     {
         if ($id != null) {
 
-            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30));
             $custom_filter['selected_user'] = $id;
         } elseif (Auth::user()->is_admin) {
-            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(30));
             $custom_filter ['all_estate'] = 1;
 
         } else {
-            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(30))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(30));
 
         }
         $custom_filter ['date_range'] = Carbon::now()->subDay(30);
-        return view('circulation.estates', ['estates' => $estate, "custom_filter" => $custom_filter]);
+        return $this->show_estates($estate, $custom_filter);
 
     }
 
@@ -521,35 +512,36 @@ class circulationController extends Controller
     {
         if ($id != null) {
 
-            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where("user_id", $id)->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365));
             $custom_filter['selected_user'] = $id;
         } elseif (Auth::user()->is_admin) {
-            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = estate::query()->where('created_at', '>=', \Carbon\Carbon::now()->subDay(365));
             $custom_filter ['all_estate'] = 1;
 
         } else {
-            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(365))->orderBy('created_at', "DESC")->Paginate(10);
+            $estate = Auth::user()->estate()->where("created_at", ">=", Carbon::now()->subDay(365));
 
         }
 
         $custom_filter ['date_range'] = Carbon::now()->subDay(365);
-        return view('circulation.estates', ['estates' => $estate, "custom_filter" => $custom_filter]);
 
+        return $this->show_estates($estate, $custom_filter);
     }
 
-    public function create_excel(){
-        $estates= Session::get('Excel'.Auth::id());
-        $file_name=date_timestamp_get(Date::now()) . rand(0, 10000)."Excel.xlsx";
-        $spreadsheet = new Spreadsheet();
-        $sheet = $spreadsheet->getActiveSheet();
-        $array=[];
-        foreach ($estates as $estate){
-            $array[]=[$estate->owner_name,$estate->owner_phone];
-        }
-        $sheet->fromArray($array);
-        $writer = new Xlsx($spreadsheet);
-        $writer->save($file_name);
-        return Response::download(env('PUBLIC_PATCH',public_path())."/".$file_name);
+
+
+    public function show_estates($estates, $custom_filter)
+    {
+        $excel_keys = [
+            'owner_name',
+            'owner_phone'
+        ];
+        $final_estates = $estates->orderBy('created_at', 'desc')->paginate(10);
+        $final_estates->appends(Request()->all())->links();
+        Session::put('Excel' . Auth::id(), $estates->get());
+        Session::put('Excel_keys' . Auth::id(), $excel_keys);
+        return view('circulation.estates', ["estates" => $final_estates, "custom_filter" => $custom_filter]);
     }
+
 
 }
