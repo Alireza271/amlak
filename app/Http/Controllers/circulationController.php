@@ -536,10 +536,11 @@ class circulationController extends Controller
             'owner_name',
             'owner_phone'
         ];
-        $final_estates = $estates->orderBy('created_at', 'desc')->paginate(10);
-        $final_estates->appends(Request()->all())->links();
         Session::put('Excel' . Auth::id(), $estates->get());
         Session::put('Excel_keys' . Auth::id(), $excel_keys);
+        $final_estates = $estates->orderBy('created_at', 'desc')->paginate(10);
+        $final_estates->appends(Request()->all())->links();
+
         return view('circulation.estates', ["estates" => $final_estates, "custom_filter" => $custom_filter]);
     }
 

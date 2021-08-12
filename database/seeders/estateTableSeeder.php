@@ -7,6 +7,7 @@ use App\Models\estate;
 use App\Models\Location;
 use Faker\Factory;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Session;
 
 class estateTableSeeder extends Seeder
 {
@@ -17,6 +18,7 @@ class estateTableSeeder extends Seeder
      */
     public function run()
     {
+        Session::all();
         $faker = Factory::create();
         $count = 5000;
         for ($i = 0; $i < $count; $i++) {
