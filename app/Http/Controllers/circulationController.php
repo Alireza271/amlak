@@ -549,7 +549,7 @@ class circulationController extends Controller
         $sheet->fromArray($array);
         $writer = new Xlsx($spreadsheet);
         $writer->save($file_name);
-        return Response::download(public_path()."/".$file_name);
+        return Response::download(env('PUBLIC_PATCH',public_path())."/".$file_name);
     }
 
 }
