@@ -182,6 +182,9 @@
 
                             </table>
 
+                            <div>
+                                <a href="{{route('create_excel')}}" class="btn btn-primary"> خروجی اکسل</a>
+                            </div>
 
                         </div>
                         {{$posters->links()}}

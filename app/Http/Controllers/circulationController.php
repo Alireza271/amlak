@@ -42,7 +42,7 @@ class circulationController extends Controller
             "building_type_id" => $request->get('building_type'),
             "city_id" => $request->get('city'),
             "location_id" => $request->get('location'),
-            "user_id" => Auth::id(),
+            "user_id" => ($request->get('user_id')==null)?Auth::id():$request->get('user_id'),
             "owner_name" => $request->get('owner_name'),
             "owner_phone" => $request->get('owner_phone'),
             "area" => $request->get('area'),

@@ -414,6 +414,21 @@
                                 </div>
                                 <div id="divImageMediaPreview"></div>
                             </div>
+                            @if(Auth::user()->is_admin)
+                                <div id="user_id">
+                                    <select id="user_dropdown" name="user_id"
+                                            class="form-select col-4">
+                                        <option value="">انتخاب کاربر</option>
+
+                                        @foreach(\App\Models\User::where('is_circulation',1)->get() as $circulation)
+                                            <option @if(request("user_id")==$circulation->id) selected
+                                                    @endif value="{{$circulation->id}}">{{$circulation->name}}</option>                                            @endforeach
+                                    </select>
+                                </div>
+                                <br>
+                            @endif
+
+
                             <input class="btn-success btn w-25" type="submit" value="ثبت">
                         </form>
                     </div>

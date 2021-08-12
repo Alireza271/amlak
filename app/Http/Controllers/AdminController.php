@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Date;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
@@ -61,19 +62,19 @@ class AdminController extends Controller
     public function delete_user($id)
     {
         $user = User::find($id);
-        if ($user->is_admin || $user->is_circulation){
-            $estates_ids=$user->estate->pluck('id');
-            foreach ($estates_ids as $estate_id){
+        if ($user->is_admin || $user->is_circulation) {
+            $estates_ids = $user->estate->pluck('id');
+            foreach ($estates_ids as $estate_id) {
                 $this->delete_estate($estate_id);
             }
-            $customer_info_ids=$user->customersinfo->pluck('id');
-            foreach ($customer_info_ids as $id){
+            $customer_info_ids = $user->customersinfo->pluck('id');
+            foreach ($customer_info_ids as $id) {
                 $this->delete_customer_info($id);
             }
 
-        }else{
-            $posters_ids=$user->Posters->pluck('id');
-            foreach ($posters_ids as $id){
+        } else {
+            $posters_ids = $user->Posters->pluck('id');
+            foreach ($posters_ids as $id) {
                 $this->delete_poster($id);
             }
 
@@ -118,21 +119,21 @@ class AdminController extends Controller
     public function customer_info_form(Request $request)
 
     {
-       Auth::user()->customersinfo()->create($request->all());
+        Auth::user()->customersinfo()->create($request->all());
 
         return Redirect:: route('admin');
     }
 
     public function customers_info()
     {
-        $Customers_Info = CustomerInfo::query()->paginate(10);
-        return view('admin.customers_info', ['customers_info' => $Customers_Info]);
+        $Customers_Info = CustomerInfo::query();
+        return $this->show_customer_info($Customers_Info);
     }
 
     public function get_customer_info($id)
     {
         $customer_info = CustomerInfo::find($id);
-        return view('admin.get_customer_info', ['customer_info' => $customer_info]);
+        return $this->show_customer_info($customer_info);
 
     }
 
@@ -161,23 +162,32 @@ class AdminController extends Controller
         if ($from_date != null) {
             $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
             $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
-            $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
+            $filter = $filter->where("created_at", ">=", $from_date)->where('created_at', "<=", $to_date);
         }
 
 
-        $customers = $filter->paginate(10);
-        $customers->appends($request->all())->links();
+        return $this->show_customer_info($filter);
+    }
 
-
-        return view('admin.customers_info', ['customers_info' => $customers]);
+    public function show_customer_info($customers)
+    {
+        $excel_keys=[
+            'name',
+            'phone'
+        ];
+        Session::put('Excel' . Auth::id(), $customers->get());
+        Session::put('Excel_keys' . Auth::id(), $excel_keys);
+        $final_customers = $customers->paginate(10);
+        $final_customers->appends(Request()->all())->links();
+        return view('admin.customers_info', ['customers_info' => $final_customers]);
 
     }
 
     public function posters_report()
     {
         $users = User::query()->where('is_attract', 1)->paginate(10);
-        $posters=Poster::all();
-        return view('admin.posters_report', ['users' => $users,"posters"=>$posters]);
+        $posters = Poster::all();
+        return view('admin.posters_report', ['users' => $users, "posters" => $posters]);
     }
 
     public function search_posters_report(Request $request)
@@ -232,22 +242,24 @@ class AdminController extends Controller
         if ($from_date != null) {
             $from_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("from_date"), true))->format('Y-m-d'); //2016-05-8
             $to_date = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers(($request->get("to_date") == null) ? Jalalian::forge('today')->format('Y/m/d') : $request->get("to_date"), true))->addDays(1)->format('Y-m-d');
-            $filter = $filter->where("created_at",">=",$from_date)->where('created_at',"<=" ,$to_date);
+            $filter = $filter->where("created_at", ">=", $from_date)->where('created_at', "<=", $to_date);
         }
 
         $users = array_unique($filter->pluck('user_id')->toArray());
 
-        try {        $users= User::query()->findMany($users)->toQuery()->paginate(10);
+        try {
+            $users = User::query()->findMany($users)->toQuery()->paginate(10);
 
-        }catch (\Exception $e){
-            $users=[];
+        } catch (\Exception $e) {
+            $users = [];
         }
         $posters = $filter->paginate(10);
 
         $posters->appends($request->all())->links();
 
-        return view('admin.posters_report', ['posters' => $posters,'users'=>$users]);
+        return view('admin.posters_report', ['posters' => $posters, 'users' => $users]);
     }
+
     public function delete_estate($id)
     {
         if (auth()->user()->is_admin) {
@@ -292,8 +304,9 @@ class AdminController extends Controller
         }
     }
 
-    public function delete_customer_info($id){
-        $Costomer_info=CustomerInfo::find($id);
+    public function delete_customer_info($id)
+    {
+        $Costomer_info = CustomerInfo::find($id);
         $Costomer_info->delete();
         return \redirect(request()->headers->get('referer'));
 
@@ -301,7 +314,7 @@ class AdminController extends Controller
 
     public function delete_poster($id)
     {
-        $poster=Poster::find($id);
+        $poster = Poster::find($id);
         $poster->delete();
         return \redirect(request()->headers->get('referer'));
 
