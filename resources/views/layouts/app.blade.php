@@ -31,7 +31,9 @@
 <!-- Latest compiled JavaScript -->
 
     <style>
-
+        @font-face {
+            font-family: IRAN Sans; src: url('/fonts/IRANSans.ttf');
+        }
 body{
     font-family: "IRAN Sans";
 }
