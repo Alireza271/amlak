@@ -181,40 +181,40 @@ class AttractController extends Controller
 
     public function show_posters($posters)
     {
-        $excel_array = [];
-        foreach ($posters->with(['city','estate_type'])->get() as $item) {
-
-            $city = $item->city->name;
-            $estate_type = $item->estate_type->name;
 
 
-
-            unset($item->city);
-            unset($item->estate_type);
-
-            $item->city = $city;
-            $item->estate_type = $estate_type;
-            $item->created_at=CalendarUtils::strftime('Y-m-d', strtotime($item->created_at)); // 1395-02-19
+            if (Auth::user()->is_admin) {
+                $excel_array = [];
+                foreach ($posters->with(['city', 'estate_type'])->get() as $item) {
+                $city = $item->city->name;
+                $estate_type = $item->estate_type->name;
 
 
+                unset($item->city);
+                unset($item->estate_type);
 
-            array_push($excel_array, $item);
+                $item->city = $city;
+                $item->estate_type = $estate_type;
+                $item->created_at = CalendarUtils::strftime('Y-m-d', strtotime($item->created_at)); // 1395-02-19
+
+
+                array_push($excel_array, $item);
+            }
+            $keys = [
+                'name',
+                'phone',
+                'estate_type',
+                'city',
+                'created_at'
+
+            ];
+
+
+            Session::put('Excel_keys' . Auth::id(), $keys);
+
+            Session::put('Excel' . Auth::id(), $excel_array);
         }
-        $keys = [
-            'name',
-            'phone',
-            'estate_type',
-            'city',
-            'created_at'
 
-        ];
-
-
-        Session::put('Excel_keys' . Auth::id(), $keys);
-
-        Session::put('Excel' . Auth::id(),$excel_array
-        );
-//        Session::put('Excel_keys' . Auth::id(), $excel_keys);
         $final_posters = $posters->paginate(10);
         $final_posters->appends(Request()->all())->links();
         return view('attract.posters', ['posters' => $final_posters]);

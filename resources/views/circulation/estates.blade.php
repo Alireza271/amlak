@@ -413,10 +413,13 @@
                     </tbody>
                 </table>
                     </div>
-                    <br>
-                    <div>
-                        <a href="{{route('create_excel')}}" class="btn btn-primary"> خروجی اکسل</a>
-                    </div>
+                    @if(Auth::user()->is_admin)
+                        <br>
+                        <div>
+                            <a href="{{route('create_excel')}}" class="btn btn-primary"> خروجی اکسل</a>
+                        </div>
+                    @endif
+
             </div>
             {{$estates->links()}}
             <div class="card-footer justify-content-evenly ">

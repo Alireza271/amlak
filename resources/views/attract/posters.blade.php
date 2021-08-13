@@ -181,11 +181,11 @@
                                 </tbody>
 
                             </table>
-
-                            <div>
-                                <a href="{{route('create_excel')}}" class="btn btn-primary"> خروجی اکسل</a>
-                            </div>
-
+                            @if(Auth::user()->is_admin)
+                                <div>
+                                    <a href="{{route('create_excel')}}" class="btn btn-primary"> خروجی اکسل</a>
+                                </div>
+                            @endif
                         </div>
                         {{$posters->links()}}
                     </div>

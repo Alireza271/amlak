@@ -120,7 +120,6 @@ class circulationController extends Controller
     {
         $estates = Auth::user()->estate()->orderBy('created_at', "DESC")->orderBy('created_at', "DESC")->Paginate(10);
         $custom_filter = [];
-        return Excel::download(new UsersExport($estates->all('phone')), 'test.xlsx');
 
         return view('circulation.estates', compact("estates", "custom_filter"));
     }
@@ -532,12 +531,15 @@ class circulationController extends Controller
 
     public function show_estates($estates, $custom_filter)
     {
-        $excel_keys = [
-            'owner_name',
-            'owner_phone'
-        ];
-        Session::put('Excel' . Auth::id(), $estates->get());
-        Session::put('Excel_keys' . Auth::id(), $excel_keys);
+        if (Auth::user()->is_admin){
+            $excel_keys = [
+                'owner_name',
+                'owner_phone'
+            ];
+            Session::put('Excel' . Auth::id(), $estates->get());
+            Session::put('Excel_keys' . Auth::id(), $excel_keys);
+        }
+
         $final_estates = $estates->orderBy('created_at', 'desc')->paginate(10);
         $final_estates->appends(Request()->all())->links();
 
