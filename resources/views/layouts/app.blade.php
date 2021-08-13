@@ -29,6 +29,14 @@
 
 
 <!-- Latest compiled JavaScript -->
+
+    <style>
+
+body{
+    font-family: "IRAN Sans";
+}
+
+    </style>
 </head>
 <body>
 <div id="app">
