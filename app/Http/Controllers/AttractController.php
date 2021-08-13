@@ -215,7 +215,7 @@ class AttractController extends Controller
             Session::put('Excel' . Auth::id(), $excel_array);
         }
 
-        $final_posters = $posters->paginate(10);
+        $final_posters = $posters->orderBy('created_at', 'desc')->paginate(10);
         $final_posters->appends(Request()->all())->links();
         return view('attract.posters', ['posters' => $final_posters]);
 
@@ -264,7 +264,7 @@ class AttractController extends Controller
                 }
 
             }
-            $poster_daily_reports = $poster_daily_reports->paginate(10);
+            $poster_daily_reports = $poster_daily_reports->orderBy('created_at', 'desc')->paginate(10);
             $poster_daily_reports->appends($request->all())->links();
 
             return view('attract.posters_daily_report', compact('poster_daily_reports'));
