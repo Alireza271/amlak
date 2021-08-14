@@ -69,7 +69,7 @@
 
 
                                     <a class="list-group-item " id="list-settings-list"
-                                       href="{{route('estates')}}" role="tab"> املاک ثبت شده من</a>
+                                       href="{{route('my_estates')}}" role="tab"> املاک ثبت شده من</a>
 
                                     <span
                                         class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">{{Auth::user()->estate->count()}}</span>

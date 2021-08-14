@@ -2,25 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CustomerInfo;
-use App\Models\estate;
-use App\Models\Estate_Images;
-use App\Models\Options;
 use App\Models\Poster;
 use App\Models\Poster_Daily_Report;
-use App\Models\User;
-use Carbon\Carbon;
-use Carbon\Traits\Date;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
-use Illuminate\Support\Facades\Validator;
-use Intervention\Image\Facades\Image;
 use Morilog\Jalali\CalendarUtils;
 use Morilog\Jalali\Jalalian;
-use Symfony\Component\VarDumper\Cloner\Data;
-use function PHPUnit\Framework\isEmpty;
-use function PHPUnit\Framework\isNull;
 
 class AttractController extends Controller
 {

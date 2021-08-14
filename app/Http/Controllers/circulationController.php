@@ -94,14 +94,12 @@ class circulationController extends Controller
                 $img = Image::make(base64_to_jpeg($file, $fileName));
                 if ($i) {
                     $img->resize(100, 100);
-//                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $fileName, 80);
-                    $img->save('/home1/shpourir/public_html/images/thumbnails/' . $img->basename, 80);
+                    $img->save(env('PUBLIC_PATCH', public_path()).'/images/thumbnails/' . $img->basename, 80);
 
                     $estate->thumbnail = $img->basename;
                     $estate->save();
                     $i = false;
                 }
-//                $file->move('/home1/shpourir/public_html/images/', $fileName);
 
                 $estate->fresh()->images()->create([
                         'file_name' => $img->basename,
@@ -116,12 +114,12 @@ class circulationController extends Controller
     }
 
 
-    public function estates()
+    public function my_estates()
     {
-        $estates = Auth::user()->estate()->orderBy('created_at', "DESC")->orderBy('created_at', "DESC")->Paginate(10);
+        $estates = Auth::user()->estate();
         $custom_filter = [];
 
-        return view('circulation.estates', compact("estates", "custom_filter"));
+        return $this->show_estates($estates,$custom_filter);
     }
 
     public function update_estate_page($id)
@@ -245,7 +243,7 @@ class circulationController extends Controller
         if ($query != null) {
             $filter = $filter->where('id', $query);
 
-            if (!Auth::user()->is_admin) {
+            if (Auth::user()->is_circulation) {
 
                 $filter = $filter->where('user_id', Auth::id());
             }
@@ -254,29 +252,7 @@ class circulationController extends Controller
             }
 
 
-//            $getby_id = estate::query()->where([['id',$query],['estate_type_id',$estate_type]]);
 //
-//
-//            if ($getby_id->get()->isNotEmpty()) {
-//                $filter=$getby_id;
-//            }
-//            else
-//            {
-//                if (Auth::user()->is_admin) {
-////جستجو بین همه شماره ها در صورت درخواست ادمین-
-//                    $filter = $filter->Where([["owner_phone", 'LIKE', '%'. $query.'%']])
-//                        ->orWhere([["owner_name", "LIKE", '%' . $query . '%']])
-//                        ->orWhere([["description", "LIKE", '%' . $query . '%']]);
-//                } else {
-//
-//                    //جستجو با شماره بین املاک ثبت شده هر کاربر برای خودش
-//                    $filter = $filter->Where([["owner_phone", 'LIKE', '%' . $query . '%'], ['user_id', \auth()->id()]])
-//                        ->orWhere([["owner_name", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]])
-//                        ->orWhere([["description", "LIKE", '%' . $query . '%'], ['user_id', auth()->id()]]);
-//                }
-//
-//            }
-
         } else {
 
 

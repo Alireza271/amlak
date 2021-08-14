@@ -63,6 +63,22 @@
                                     </a>
 
                                 </div>
+
+                                <div class="list-group position-relative" id="list-tab" role="">
+
+                                    <br>
+                                    <a class="list-group-item " id="list-settings-list"
+                                       href="{{route('all_estates')}}" role="tab">
+                                        <i class="fas fa-archive"></i>
+
+                                        <span>نمایش کل املاک ثبت شده</span>
+                                    </a>
+
+                                    <span
+                                        class="position-absolute top-50 start-100 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::all()->count()}}</span>
+
+                                </div>
+
                                 <div class="list-group position-relative" id="list-tab" role="">
 
 

@@ -18,12 +18,12 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 | contains the "web" middleware group. Now create something great!
 |
 */
-Route::get('test',function (){
-return \Illuminate\Support\Facades\Session::all();
+Route::get('test', function () {
+    return \Illuminate\Support\Facades\Session::all();
 });
 Route::get('/', function () {
 //
-    if (Auth::check()){
+    if (Auth::check()) {
 
         if (Auth::user()->is_admin) {
             return redirect(route("admin"));
@@ -41,6 +41,10 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+Route::get('get/{id}', [App\Http\Controllers\circulationController::class, 'get_estate'])->name('get_estate');
+Route::get('all_estate', [App\Http\Controllers\circulationController::class, 'all_estates'])->name('all_estates');
+Route::get('search_estate', [App\Http\Controllers\circulationController::class, 'search_estate'])->name('search_estate');
 
 Route::prefix('admin')->middleware("admin")->group(function () {
     Route::get('/', [App\Http\Controllers\AdminController::class, 'index'])->name('admin');
@@ -69,19 +73,16 @@ Route::prefix("circulation")->middleware("circulation")->group(function () {
     Route::get('', [App\Http\Controllers\circulationController::class, 'index'])->name('circulation');
     Route::get('add_estate', [App\Http\Controllers\circulationController::class, 'add_estate_page'])->name('add_estate_page');
     Route::post('add_estate', [App\Http\Controllers\circulationController::class, 'add_estate'])->name('add_estate');
-    Route::get('estates', [App\Http\Controllers\circulationController::class, 'estates'])->name('estates');
+    Route::get('estates', [App\Http\Controllers\circulationController::class, 'my_estates'])->name('my_estates');
     Route::get('update/{id}/', [App\Http\Controllers\circulationController::class, 'update_estate_page'])->name('update_estate_page');
     Route::post('update', [App\Http\Controllers\circulationController::class, 'update_estate'])->name('update_estate');
     Route::get('delete/{id}', [App\Http\Controllers\AdminController::class, 'delete_estate'])->name('delete_estate');
-    Route::get('get/{id}', [App\Http\Controllers\circulationController::class, 'get_estate'])->name('get_estate');
-    Route::get('search_estate', [App\Http\Controllers\circulationController::class, 'search_estate'])->name('search_estate');
-    Route::get('all_estate', [App\Http\Controllers\circulationController::class, 'all_estates'])->name('all_estates');
     Route::get('today/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_day'])->name('estates_of_day');
     Route::get('week/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_week'])->name('estates_of_week');
     Route::get('month/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_month'])->name('estates_of_month');
     Route::get('year/{id?}', [App\Http\Controllers\circulationController::class, 'estates_of_year'])->name('estates_of_year');
-    Route::get('download/',function (){
-       return create_excel();
+    Route::get('download/', function () {
+        return create_excel();
     })->name('create_excel');
 });
 
@@ -100,6 +101,7 @@ Route::prefix("attract")->middleware("attract")->group(function () {
     Route::get('/search_posters', [App\Http\Controllers\AttractController::class, 'search_posters'])->name('search_posters');
     Route::any('/poster_daily_report_form', [App\Http\Controllers\AttractController::class, 'poster_daily_report_form'])->name('poster_daily_report_form');
     Route::any('/poster_daily_report_page', [App\Http\Controllers\AttractController::class, 'poster_daily_report_page'])->name('poster_daily_report_page');
+
 
 });
 
