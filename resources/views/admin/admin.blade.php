@@ -21,18 +21,18 @@
                     <div class="row">
                         <div class="col-12">
                             <div class="card-group">
-                                <div class="row col-12  m-2 justify-content-around p-3">
-                                    @foreach(\App\Models\estate_type::all() as $type)
-                                        <a href="{{route("search_estate",['estate_type'=>$type->id ,
-    "all_estate"=>1,'lock'=>true
-])}}" type="button" class="col-3 btn btn-primary position-relative  m-1 ">
-                                            نمایش {{$type->name}}
-                                            <span
-                                                class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::query()->where('estate_type_id',$type->id)->count()}}</span>
-                                        </a>
+                                    <div class="row col-12  m-2 justify-content-around p-3">
+                                        @foreach(\App\Models\estate_type::all() as $type)
+                                            <a href="{{route("search_estate",['estate_type'=>$type->id ,
+        "all_estate"=>1,'lock'=>true
+    ])}}" type="button" class="col-3 btn btn-primary position-relative  m-1 ">
+                                                نمایش {{$type->name}}
+                                                <span
+                                                    class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::query()->where('estate_type_id',$type->id)->count()}}</span>
+                                            </a>
 
-                                    @endforeach
-                                </div>
+                                        @endforeach
+                                    </div>
                                 <div class="row  m-2 justify-content-around p-3">
                                     <a href="{{route("estates_of_day")}}" type="button"
                                        class="col-5 btn btn-primary position-relative  m-1 ">

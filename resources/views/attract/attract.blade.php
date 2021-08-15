@@ -14,17 +14,19 @@
 
                             <div class="row row-cols-12 m-2">
 
-                                <a href="" type="button" class="col-3 btn btn-primary position-relative m-3 p-4">
-                                     گزارشات من
-                                    <span
-                                        class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\Illuminate\Support\Facades\Auth::user()->posters->count()}}</span>
-                                </a>
+                                <div class="row col-12  m-2 justify-content-around p-3">
+                                    @foreach(\App\Models\estate_type::all() as $type)
+                                        <a href="{{route("search_estate",['estate_type'=>$type->id ,
+        "all_estate"=>1,'lock'=>true
+    ])}}" type="button" class="col-3 btn btn-primary position-relative  m-1 ">
+                                            نمایش {{$type->name}}
+                                            <span
+                                                class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\App\Models\estate::query()->where('estate_type_id',$type->id)->count()}}</span>
+                                        </a>
 
-                               <a href="" type="button" class="col-3 btn btn-primary position-relative m-3 p-4">
-                                     گزارشات امروز
-                                    <span
-                                        class="position-absolute top-0 start-50 translate-middle badge rounded-pill bg-danger">{{\Illuminate\Support\Facades\Auth::user()->posters()->where('created_at','>=',\Carbon\Carbon::today())->count()}}</span>
-                                </a>
+                                    @endforeach
+                                </div>
+
 
                             </div>
 
