@@ -156,7 +156,9 @@
                                                                        for="form6Example7">توضیحات</label>
                                                                 <textarea name="description" class="form-control"
                                                                           id="form6Example7"
-                                                                          rows="4"></textarea>
+                                                                          rows="4">
+                                                                    {{$poster->description}}
+                                                                </textarea>
 
                                                             </div>
                                                             <div class="form-outline mb-4">
@@ -164,9 +166,9 @@
                                                                     خرید</label>
                                                                 <textarea name="result" class="form-control"
                                                                           id="form6Example7"
-                                                                          value="{{$poster->result}}"
 
-                                                                          rows="4"></textarea>
+
+                                                                          rows="4">{{$poster->result}}</textarea>
 
                                                             </div>
                                                             <div class="form-outline mb-4">
