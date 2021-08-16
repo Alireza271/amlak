@@ -80,12 +80,12 @@
 
                         <div class=" card-group justify-content-between">
                             <label class="fw-bold" style="font-size: large">نتیجه پیگیری:</label>
-                            <label class="w-50">{{$poster->description}}</label>
+                            <label class="w-50">{{$poster->result}}</label>
                         </div>
 
                             <div class=" card-group justify-content-between">
                             <label class="fw-bold" style="font-size: large">تاریخ پیگیری:</label>
-                            <label class="w-50">{{\Morilog\Jalali\CalendarUtils::strftime('%Y-%m-%d', strtotime($poster->result_date))}}</label>
+                            <label class="w-50">{{$poster->result_date}}</label>
                         </div>
 
                         <hr>
