@@ -1,6 +1,11 @@
 @extends('layouts.app')
 
 @section('content')
+    <style>
+        .textarea{
+            font-size: 17px;
+        }
+    </style>
     <div class="container">
 
         <div class="card">
@@ -68,6 +73,7 @@
                                 </label>
                             </div>
                         </div>
+                        </div>
 
                 </form>
             </div>
@@ -105,19 +111,26 @@
                                         <form method="post" action="{{route('poster_daily_report_page')}}">
                                             {{csrf_field()}}
                                             <input type="hidden" name="id" value="{{$poster_daily_report->id}}">
-                                            <td><textarea
+                                            <td><textarea class="textarea"
                                                     @if(!Auth::user()->is_admin) disabled="disabled" @endif
-                                                style="font-size: 10px"
+
                                                     name="poster_count">{{$poster_daily_report->poster_count}}</textarea>
                                             </td>
                                             <td><textarea
+
+                                                    class="textarea"
                                                     @if(!Auth::user()->is_admin) disabled="disabled" @endif
-                                                style="font-size: 10px"
+
                                                     name="description1">{{$poster_daily_report->description1}}</textarea>
                                             </td>
-                                            <td><textarea
-                                                    @if(!Auth::user()->is_admin) disabled="disabled" @endif
-                                                style="font-size: 10px "
+                                            <td><textarea class="textarea"
+                                                          style="width: 400px;
+                                                        height: 150px;
+
+"
+
+                                                          @if(!Auth::user()->is_admin) disabled="disabled" @endif
+
                                                     name="description2">{{$poster_daily_report->description2}}</textarea>
                                             </td>
                                             <td>
@@ -217,6 +230,7 @@
         $("#delete").on('click', function () {
             return confirm("آیا مطمعن هستید؟")
         });
+
 
 
     </script>
