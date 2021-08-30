@@ -175,12 +175,10 @@
                                                                 <label class="form-label" for="form6Example7">تاریخ
                                                                     نتیجه</label>
                                                                 <input name="result_date"  id="form6Example6"
-                                                                       value="{{$poster->result_date}}"
-
-                                                                       class="observer-example-alt"/>
+                                                                       class="observer-example-alt" value="{{ Morilog\Jalali\CalendarUtils::createCarbonFromFormat('Y/m/d',  Morilog\Jalali\CalendarUtils::convertNumbers($poster->result_date, true))->addday(1)->format('Y-m-d')}}">
 
                                                             </div>
-
+                                                        {{$poster->result_date}}
                                                             <!-- Checkbox -->
 
                                                             <!-- Submit button -->
@@ -215,5 +213,8 @@
             format: 'YYYY/MM/DD',
             altField: '.observer-example'
         });
+
+
+
     </script>
 @endsection
