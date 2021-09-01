@@ -427,8 +427,13 @@
                                 </div>
                                 <br>
                             @endif
+                            <div class="">
+                                <label for="">  تاریخ:</label>
+                                <input autocomplete="off" name="created_at" id="created_at"
+                                       class="observer-example-alt form-control"/>
+                            </div>
 
-
+                            <br>
                             <input class="btn-success btn w-25" type="submit" value="ثبت">
                         </form>
                     </div>
@@ -776,7 +781,11 @@
             $(document).on('click', '.btn-close', function(){
                 $('.hidden-image').remove();
             });
-
+            $('.observer-example-alt').persianDatepicker({
+                observer: false,
+                format: 'YYYY/MM/DD',
+                altField: '.observer-example'
+            });
         </script>
 @endsection
 
