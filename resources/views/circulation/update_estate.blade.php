@@ -395,6 +395,12 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <br>
+                                    <div class="">
+                                        <label for="">  تاریخ:</label>
+                                        <input autocomplete="off" name="created_at" id="created_at"
+                                               class="observer-example-alt form-control"/>
+                                    </div>
 
                                     <input class="btn-success btn w-25" type="submit" value="ثبت">
                             </div>
@@ -494,6 +500,11 @@
                          $("#price_input").val(price.replaceAll(',',''));
 
                      }
+                     $('.observer-example-alt').persianDatepicker({
+                         observer: false,
+                         format: 'YYYY/MM/DD',
+                         altField: '.observer-example'
+                     });
 
         </script>
 @endsection

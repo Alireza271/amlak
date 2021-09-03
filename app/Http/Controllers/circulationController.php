@@ -141,6 +141,8 @@ class circulationController extends Controller
 
     public function update_estate(Request $request)
     {
+        $created_at = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("created_at"), true))->format('Y-m-d'); //2016-05-8
+
 
         if (Auth::user()->is_admin) {
             $estate = estate::find($request->get('estate_id'));
@@ -168,6 +170,7 @@ class circulationController extends Controller
                 "floors_count" => $request->get('floors_count'),
                 "floors" => $request->get('floors'),
                 "module" => $request->get('module'),
+                'created_at'=>$created_at
             ]
         );
         $estate->fresh()->used_type()->detach();
