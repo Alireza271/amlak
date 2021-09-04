@@ -32,9 +32,11 @@ class AttractController extends Controller
 
     public function poster_form(Request $request)
     {
+        $created_at = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("created_at"), true))->format('Y-m-d'); //2016-05-8
 
-        $poster = Poster::create($request->all());
+        $poster = Poster::create($request->except(['created_at']));
         $poster->user_id = \auth()->id();
+        $poster->created_at = $created_at;
         $poster->save();
 
         return redirect(route('posters', ['status' => 'ok']));
@@ -91,6 +93,8 @@ class AttractController extends Controller
 
     public function update_poster(Request $request)
     {
+        $created_at = CalendarUtils::createCarbonFromFormat('Y/m/d', CalendarUtils::convertNumbers($request->get("created_at"), true))->format('Y-m-d'); //2016-05-8
+        $request->merge(['created_at' => $created_at]);
         if (Auth::user()->is_admin) {
             Poster::find($request->get('id'))->update($request->all());
             $poster = Poster::find($request->get('id'));
@@ -171,9 +175,9 @@ class AttractController extends Controller
     {
 
 
-            if (Auth::user()->is_admin) {
-                $excel_array = [];
-                foreach ($posters->with(['city', 'estate_type'])->get() as $item) {
+        if (Auth::user()->is_admin) {
+            $excel_array = [];
+            foreach ($posters->with(['city', 'estate_type'])->get() as $item) {
                 $city = $item->city->name;
                 $estate_type = $item->estate_type->name;
 

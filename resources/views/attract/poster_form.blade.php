@@ -132,10 +132,17 @@
                                                                           rows="4"></textarea>
 
                                                             </div>
+{{--                                                            <div class="form-outline mb-4">--}}
+{{--                                                                <label class="form-label " for="form6Example7">تاریخ--}}
+{{--                                                                    نتیجه</label>--}}
+{{--                                                                <input name="result_date"  id="form6Example6"--}}
+{{--                                                                       class="observer-example-alt"/>--}}
+
+{{--                                                            </div>--}}
                                                             <div class="form-outline mb-4">
                                                                 <label class="form-label " for="form6Example7">تاریخ
-                                                                    نتیجه</label>
-                                                                <input name="result_date"  id="form6Example6"
+                                                                    </label>
+                                                                <input name="created_at"  id="form6Example6"
                                                                        class="observer-example-alt"/>
 
                                                             </div>

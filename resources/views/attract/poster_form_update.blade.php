@@ -171,13 +171,13 @@
                                                                           rows="4">{{$poster->result}}</textarea>
 
                                                             </div>
-{{--                                                            <div class="form-outline mb-4">--}}
-{{--                                                                <label class="form-label" for="form6Example7">تاریخ--}}
-{{--                                                                    نتیجه</label>--}}
-{{--                                                                <input name="result_date"  id="form6Example6"--}}
-{{--                                                                       class="observer-example-alt" value="{{ Morilog\Jalali\CalendarUtils::createCarbonFromFormat('Y/m/d',  Morilog\Jalali\CalendarUtils::convertNumbers($poster->result_date, true))->addday(1)->format('Y-m-d')}}">--}}
+                                                            <div class="form-outline mb-4">
+                                                                <label class="form-label" for="form6Example7">تاریخ
+                                                                    </label>
+                                                                <input name="created_at"  id="form6Example6"
+                                                                       class="observer-example-alt" value="{{$poster->created_at}}">
 
-{{--                                                            </div>--}}
+                                                            </div>
                                                             <!-- Checkbox -->
 
                                                             <!-- Submit button -->
