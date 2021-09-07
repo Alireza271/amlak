@@ -333,14 +333,12 @@ class circulationController extends Controller
 
             //price
             if ($min_price != null) {
-
-                $filter = $filter->where('price', '>=', $min_price);
+                $filter = $filter->where('price', '>=', (int)$min_price);
             }
 
             if ($max_price != null) {
-                error_log('max price');
 
-                $filter = $filter->where('price', '<=', $max_price);
+                $filter = $filter->where('price', '<=', (int)$max_price);
             }
             //end_price
 
