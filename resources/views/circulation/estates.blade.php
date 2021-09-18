@@ -401,7 +401,7 @@
 
                                     @if(auth()->user()->is_admin)
                                         <a href={{route('delete_estate',['id'=>$estate->id])}} type="button"
-                                          id="delete_estate" class="btn btn-outline-danger btn-sm">حذف</a>
+                                           class="delete_estate btn btn-outline-danger btn-sm">حذف</a>
                                     @endif
                                 </div>
 
@@ -584,7 +584,7 @@
             return true;
         }
 
-        $("#delete_estate").on('click',function (){
+        $(".delete_estate").on('click',function (){
           return confirm("آیا مطمعن هستید؟")
         });
     </script>

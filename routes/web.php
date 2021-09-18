@@ -19,7 +19,7 @@ use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 |
 */
 Route::get('test', function () {
-    return \Illuminate\Support\Facades\Session::all();
+    phpinfo();
 });
 Route::get('/', function () {
 //
