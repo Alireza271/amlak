@@ -273,7 +273,7 @@
 
 
                                 <div class="row"><label class=" ">
-                                        <span style="color: red">*</span>
+{{--                                        <span style="color: red">*</span>--}}
 
                                         طول:
                                     </label>
