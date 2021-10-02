@@ -24,6 +24,7 @@ class CreateUsersTable extends Migration
             $table->boolean("is_circulation")->default(false);
             $table->rememberToken();
             $table->timestamps();
+            $table->lon
         });
     }
 
